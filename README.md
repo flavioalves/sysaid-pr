@@ -41,21 +41,21 @@
   - hover sobre o número -> hover sobre célula
 
 #### Programar indisponibilidade
--Só apresentar a tabela após a seleção do grupo
+- Só apresentar a tabela após a seleção do grupo
 
 #### Modal de Programar indisponibilidade
 - Diminuir a margem inferior da modal
 - Testes com envio de email
 
 #### Relatório
-Apresentar um label da data atual (Default)
-Melhorar estilo da pesquisa por período
+- Apresentar um label da data atual (Default)
+- Melhorar estilo da pesquisa por período
 
 #### Geral
-Melhor marca na página atual da paginação
+- Melhor marca na página atual da paginação
 
 #### Grupo de indisponibilidade
-  - Adicionar tela de   
+  - Adicionar coluna de responsável pela equipe
   - Ajustar tamanho da tabela
   - Ao selecionar a linha na tabela, apresentar o item selecionado em verde (background-color: #E6F3E5)
   - Editar e excluir - links com botões e ícones
