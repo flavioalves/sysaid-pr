@@ -23,9 +23,10 @@
 }
 
 .sysaid-extension-body .sysaid-extension-module .form-actions button.ui-button {	
-	width: 120px;
+	width: 100px;
 	margin-top: 12px;
 	float: right;
+	margin-left: 14px;
 }
 
 
