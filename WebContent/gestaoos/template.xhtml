@@ -5,19 +5,21 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:o="http://omnifaces.org/ui"
-	xmlns:p="http://primefaces.org/ui">
-	
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui">
+
 <h:head>
 
 
 	<title>#{empty pageTitle ? 'SysAid' : pageTitle}</title>
-	
-	<link type="text/css" rel="stylesheet" href="/project/faces/javax.faces.resource/theme.css?ln=primefaces-delta" />
-	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.css" />
-	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/style.css?v=#{initParam['versaoApp']}" />
-	
-<!-- <script type="text/javascript">
+
+	<link type="text/css" rel="stylesheet"
+		href="/project/faces/javax.faces.resource/theme.css?ln=primefaces-delta" />
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/resources/css/bootstrap.css" />
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/resources/css/style.css?v=#{initParam['versaoApp']}" />
+
+	<!-- <script type="text/javascript">
 		function criaCookie(chave, value) { var expira = new Date(); expira.setTime(expira.getTime() + 87600000); //expira dentro de 24h 
 				 document.cookie = chave + '=' + value + ';expires=' + expira.toUTCString(); }
 		 
@@ -34,8 +36,8 @@
 		function checkCokie() {			
 				if (lerCookie('communityUserName') != null) { alert(decodedString(lerCookie('communityUserName').slice(6))); } }
 	</script>  -->
-	
-	
+
+
 	<script type="text/javascript">
 	
 		function showError() {
@@ -79,36 +81,43 @@
     	  
 	</script>
 	<style type='text/css'>
-	.ui-confirm-dialog{
-	top:30px !important;
-	}
-	</style>
-	
+.ui-confirm-dialog {
+	top: 30px !important;
+}
+</style>
+
 	<ui:insert name="head" />
-		
+
 	<o:conditionalComment if="lt IE 9">
-	   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	</o:conditionalComment>
-	
+
 </h:head>
-<h:body>
-<p:confirmDialog global="true" style="top:30px" >
-       <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"
-       icon="ui-icon-check"/>
-       <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"
-       icon="ui-icon-close"/>
-</p:confirmDialog>
-	<p:dialog header="Aguarde..." widgetVar="dialogAguarde" modal="true" resizable="false" closable="false" position="top">
+<h:body styleClass="sysaid-extension-body">
+
+	<p:confirmDialog global="true" style="top:30px">
+		<p:commandButton value="Sim" type="button"
+			styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		<p:commandButton value="Não" type="button"
+			styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	</p:confirmDialog>
+
+	<p:dialog header="Aguarde..." widgetVar="dialogAguarde" modal="true"
+		resizable="false" closable="false" position="top">
 		<center>
 			<p style="padding: 12px;">
-				<h:graphicImage value="/resources/img/ajax-loader.gif" style="vertical-align: middle;" />
+				<h:graphicImage value="/resources/img/ajax-loader.gif"
+					style="vertical-align: middle;" />
 			</p>
-		</center>	
+		</center>
 	</p:dialog>
-	<ui:fragment rendered="false" >
-		
-		<h3><a href="${request.contextPath}">SysAid Java versão #{initParam['versaoApp']}</a></h3>
-		
+	<ui:fragment rendered="false">
+
+		<h3>
+			<a href="${request.contextPath}">SysAid Java versão
+				#{initParam['versaoApp']}</a>
+		</h3>
+
 		<p:menubar>
 			<p:submenu label="Gestão de Chamados">
 				<p:menuitem value="Grupo Dinâmico" url="/gestaoos/grupoDinamico.xhtml" />
@@ -117,20 +126,24 @@
 				<p:menuitem value="Relatório" url="/gestaoos/relatorio.xhtml" />
 			</p:submenu>
 		</p:menubar>
-	
+
 	</ui:fragment>
 
+	<p:messages id="msgs" autoUpdate="true" globalOnly="false" />
 
-	<p:messages id="msgs"  autoUpdate="true" globalOnly="false" />
-	
-	<ui:insert name="body" />
-	
-	<p:ajaxStatus onstart="PF('dialogAguarde').show()" oncomplete="PF('dialogAguarde').hide();" onerror="showError()" />  
-	
+	<h:panelGroup layout="block" styleClass="sysaid-extension-module">
+		<ui:insert name="body" />
+	</h:panelGroup>
+
+
+	<p:ajaxStatus onstart="PF('dialogAguarde').show()"
+		oncomplete="PF('dialogAguarde').hide();" onerror="showError()" />
 	<br />
-	
-	<script type='text/javascript' src="#{request.contextPath}/resources/js/bootstrap.js"></script>
-	<script type='text/javascript' src="#{request.contextPath}/resources/js/utils.js?v=#{initParam['versaoApp']}"></script>
-	
+
+	<script type='text/javascript'
+		src="#{request.contextPath}/resources/js/bootstrap.js"></script>
+	<script type='text/javascript'
+		src="#{request.contextPath}/resources/js/utils.js?v=#{initParam['versaoApp']}"></script>
+
 </h:body>
 </html>

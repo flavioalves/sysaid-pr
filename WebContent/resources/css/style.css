@@ -1,3 +1,49 @@
+.sysaid-extension-body {
+	background: #e6ebee;
+}
+
+.sysaid-extension-body .sysaid-extension-module {
+	padding: 40px;
+	margin: 30px;
+	border: 1px solid #9A9A9A;
+	border-radius: 7px;
+	background-color: white;
+}
+
+.sysaid-extension-body .sysaid-extension-module h3 {
+	margin-top: 0px;
+}
+
+.sysaid-extension-body .sysaid-extension-module .medium-form {
+	width: 600px;
+}
+
+.sysaid-extension-body .sysaid-extension-module .form-actions {
+	overflow: auto;
+}
+
+.sysaid-extension-body .sysaid-extension-module .form-actions button.ui-button {	
+	width: 120px;
+	margin-top: 12px;
+	float: right;
+}
+
+
+
+.sysaid-extension-body .sysaid-extension-module .default-table .check-column{
+	white-space:normal; 
+	text-align: center;
+	width: 40px;
+}
+
+.sysaid-extension-body .sysaid-extension-module .default-table .title-column {
+	font-weight: bold;
+}
+	
+.ui-selectonemenu .ui-selectonemenu-trigger {
+	width: 23px;
+}
+
 
 .ui-datatable {
 	padding-bottom: 2px;
@@ -64,3 +110,4 @@
 .ui-datatable .ui-column-filter {
 	width: 99%;
 }
+
