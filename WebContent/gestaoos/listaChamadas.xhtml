@@ -21,7 +21,7 @@
 		
         
 				<p:dataTable id="listaOS" value="#{vincularTecnicoBean.modelList}" lazy="true"
-					selection="#{vincularTecnicoBean.listaOS}" var="os" 
+					selection="#{vincularTecnicoBean.listaOS}" var="os" widgetVar="listaOS"
 					rowKey="#{os.id}" paginator="true" rows="25">
 				<f:facet name="header">
 					<h:outputText value="#{msg['menu.vinculo.titulo']}" />
@@ -57,15 +57,16 @@
 									style="float: left;" /></b>
 						</f:facet>
 		                #{os.solicitante}
-		            </p:column>	
+		            </p:column>
+		            	
 					<p:column >
 						<f:facet name="header">
 							<b><h:outputText value="Status"
 									style="float: left;" /></b>
 						</f:facet>
-		                #{os.status}
-		            </p:column>		            
-		            
+					 #{os.status}
+		            </p:column>	
+ 
 					<p:column >
 						<f:facet name="header">
 							<b><h:outputText value="Responsável"
@@ -116,13 +117,17 @@
 		                #{os.contato}
 		            </p:column>	
 					
-					<p:column >
-						<f:facet name="header">
-							<b><h:outputText value="Grupo Atendimento"
-									style="float: left;" /></b>
-						</f:facet>
-		                #{os.grupo}
-		            </p:column>	
+			<p:column filterBy="#{os.grupo}" headerText="Grupo Atendimento" footerText="exact" filterMatchMode="exact" >
+            <f:facet name="filter">
+                <p:selectOneMenu onchange="PF('listaOS').filter()"  value="#{vincularTecnicoBean.grupoId}">
+                    <f:selectItem itemLabel="Grupos" itemValue="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{vincularTecnicoBean.listaGrupoSelect}" />
+                    <p:ajax listener="#{vincularTecnicoBean.onGrupoChange}" update="listaOS" />
+                </p:selectOneMenu>
+            </f:facet>
+            <h:outputText value=" #{os.grupo}" />
+        </p:column> 		            
+		            
 
 				</p:dataTable>
 				<br/>
