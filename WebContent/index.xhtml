@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
+	
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{homeBean.initHome}"/>
+	</f:metadata>
+	
+	<ui:define name="body">
+	
+		<br />
+		<br />
+	
+		HOME SYSAID <h:outputText value="#{homeBean.dataAtual}" />
+		
+		<ui:fragment rendered="#{initParam['menuRendered']}">
+			
+			<br />
+			<br />
+			
+			<h:form id="userForm">
+			
+				<ui:fragment rendered="#{not homeBean.logado}">
+					<h:selectOneMenu id="user" value="#{homeBean.usuario}" converter="objectConverter" required="true" label="User" styleClass="input-sm">
+						<f:selectItem itemValue="" itemLabel="Selecione" />
+						<f:selectItems value="#{homeBean.usuarios}" var="user" itemLabel="#{user.nomeCompleto}" itemValue="#{user}" />			
+					</h:selectOneMenu>
+				
+					<p:commandButton value="Logar" action="#{homeBean.loginUser}" update=":userForm" />
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{homeBean.logado}">
+					<h:outputText value="#{homeBean.usuario.nomeCompleto} " />
+					<p:commandButton value="Sair" action="#{homeBean.logoutUser}" update=":userForm" />
+				</ui:fragment>
+				
+			</h:form>
+		
+		</ui:fragment>
+			
+	</ui:define>
+</ui:composition>

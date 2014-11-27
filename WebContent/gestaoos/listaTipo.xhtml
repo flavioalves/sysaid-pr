@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
+	
+	
+	<ui:define name="body">
+
+	<h3><h:outputText value="#{msg['menu.grupo']}" /></h3>
+	<h:outputText value="#{msg['menu.grupo.texto']}" />
+			<br />
+	<h:form id="form">
+ 
+ <p:panel header="Lista de Tipo de Indisponibilidade" style="margin-bottom:20px">
+        <h:panelGrid columns="2" cellpadding="5" id="formulario">
+ 
+            <h:outputLabel value="Nome: *" for="nome"></h:outputLabel>
+            <p:inputText id="nome" value="#{indisponibilidadeBean.tipoIndisponibilidade.nome}" required="true"/>
+ 
+            <p:commandButton id="btn_reset" value="Limpar"  update=":form:formulario"  action="#{indisponibilidadeBean.limparTipo}"/>
+            <p:commandButton id="btn_add" value="Salvar" update="lista @parent"  action="#{indisponibilidadeBean.salvarTipo}" >
+                
+            </p:commandButton>
+        </h:panelGrid>
+    </p:panel>
+ 
+    <p:outputPanel id="lista">
+        <p:dataTable value="#{indisponibilidadeBean.listaTipoIndisponibilidadeBase}" var="tipo" id="listaTable" style="width:300px">
+ 
+            <p:column headerText="Nome" width="100">
+                <h:outputText value="#{tipo.nome}" />
+            </p:column>
+ 
+            <p:column headerText="Action" width="100">
+                <p:commandLink value="Alterar" update=":form" process=":form:lista" >
+                    <f:setPropertyActionListener value="#{tipo}" target="#{indisponibilidadeBean.tipoIndisponibilidade}" />
+                </p:commandLink> 
+                 <p:spacer width="20" />           
+                <p:commandLink value="Remover" update=":form:lista" process=":form:lista" action="#{indisponibilidadeBean.removerTipo}">
+                    <f:setPropertyActionListener value="#{tipo}" target="#{indisponibilidadeBean.tipoIndisponibilidade}" />
+                    <p:confirm header="Confirmação" message="Deseja deletar esse tipo?" icon="ui-icon-alert"/>
+                </p:commandLink>
+
+            </p:column>
+ 
+        </p:dataTable>
+    </p:outputPanel>
+     
+	</h:form>
+			
+	</ui:define>
+</ui:composition>

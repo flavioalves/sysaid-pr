@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
+	
+	
+	<ui:define name="body">
+<style>
+.indisponivel_row{
+background: #D5D5D5;
+}
+</style>
+	<h3><h:outputText value="#{msg['menu.relatorio']}" /><small><h:outputText value="#{msg['menu.relatorio.texto']}" /></small></h3>
+	
+	<h:form id="form">
+	
+	 <p:outputPanel id="block_interval">
+        	<p:outputLabel for="dataFim" value="Definir Intervalo em Segundos:" style="width:200px" />
+        	<p:inputMask maxlength="3" style="width:40px;" mask="9?99" value="#{relatorioBean.interval}" ></p:inputMask>
+        	<p:spacer width="10"></p:spacer>
+        	<p:commandButton value="Salvar" icon="ui-icon-circle-check" action="#{relatorioBean.atualizaIntervalo}" process=":form:block_interval" update=":form"></p:commandButton>
+        	
+        	    <p:poll interval="#{relatorioBean.interval}" listener="#{relatorioBean.atualizaRelatorios}" update="block_relatorios" process=":form:block_periodo" />
+    </p:outputPanel>
+    
+        <b>Período: </b>
+        <p:panelGrid columns="3" id="block_periodo">
+        
+        <p:outputPanel>
+        	<p:outputLabel for="dataInicio" value="Início:"  style="width:50px" />
+        	<p:calendar id="dataInicio" value="#{relatorioBean.dataInicio}" pattern="dd/MM/yyyy" style="width:60px;"/>
+        </p:outputPanel>
+        
+		<p:outputPanel>
+        	<p:outputLabel for="dataFim" value="Fim:" style="width:50px" />
+        	<p:calendar id="dataFim" value="#{relatorioBean.dataFim}" pattern="dd/MM/yyyy" style="width:60px;"/>
+    	</p:outputPanel>
+    	
+    	<p:commandButton value="Buscar" icon="ui-icon-search" action="#{relatorioBean.atualizaPeriodo}" update=":form:block_relatorios"></p:commandButton>
+    	
+    	</p:panelGrid>
+
+    <p:panelGrid columns="2" layout="grid" id="block_relatorios"> 
+    
+    <p:outputPanel >
+    
+    <p:outputLabel for="grupo1" value="Selecione o Grupo:" style="width:110px" />
+        <p:selectOneMenu  id="grupo1" value="#{relatorioBean.grupoRel1}"  editable="false" style="margin-left:10px">
+             <p:ajax listener="#{relatorioBean.onGrupoChange(1)}" update="grupoRel1" />
+            <f:selectItem itemLabel="Selecione" itemValue="" />
+            <f:selectItems value="#{relatorioBean.listaGrupoSelect}" />
+        </p:selectOneMenu>
+    
+       <p:dataTable value="#{relatorioBean.listaUsuarioGrupoRel1}" 
+        paginator="true" rows="25" style="width:600px"
+        id="grupoRel1" var="tec" type="ordered"  itemType="none"  rowStyleClass="#{tec.indisponivelNoPeriodo == true ? 'indisponivel_row' : 'disponivel_row'}"
+        selection="#{relatorioBean.usuarioSelecionado}" 
+					rowKey="#{tec.id}">
+
+        <p:column style="width:150px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Nome:" style="float: left;" /></b>
+			</f:facet>        
+	        #{tec.userNameCalculado}
+	     </p:column>
+	    
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs Abertas:" style="float: left;" /></b>
+			</f:facet>
+			#{tec.osTotalAberta.size()}	     
+	     </p:column>
+	     
+	     <p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs no Período:" style="float: left;" /></b>
+			</f:facet>	     
+	       #{tec.osTotalRelatorio.size()}
+	     </p:column>     
+	     
+	     <!--  p:column style="width:32px;text-align: center">
+             <p:commandButton update=":form:listaTecnicoPanel" oncomplete="PF('listaTecnicoPopup').show()" icon="ui-icon-search" title="View">
+                <f:setPropertyActionListener value="#{tec}" target="#{relatorioBean.usuarioSelecionado}" />
+            </p:commandButton>
+        </p:column -->
+	        
+	    </p:dataTable>
+	    </p:outputPanel>
+	    
+	<p:outputPanel >
+    
+    <p:outputLabel for="grupo2" value="Selecione o Grupo:" style="width:110px" />
+        <p:selectOneMenu  id="grupo2" value="#{relatorioBean.grupoRel2}"  editable="false" style="margin-left:10px">
+             <p:ajax listener="#{relatorioBean.onGrupoChange(2)}" update="grupoRel2" />
+            <f:selectItem itemLabel="Selecione" itemValue="" />
+            <f:selectItems value="#{relatorioBean.listaGrupoSelect}" />
+        </p:selectOneMenu>
+	    <p:dataTable value="#{relatorioBean.listaUsuarioGrupoRel2}" 
+        paginator="true" rows="25" style="width:600px" id="grupoRel2" rowStyleClass="#{tec.indisponivelNoPeriodo == true ? 'indisponivel_row' : 'disponivel_row'}"
+         var="tec" type="ordered"  itemType="none" 
+        selection="#{relatorioBean.usuarioSelecionado}" 
+					rowKey="#{tec.id}">
+
+        <p:column style="width:150px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Nome:" style="float: left;" /></b>
+			</f:facet>        
+	        #{tec.userNameCalculado}
+	     </p:column>
+	     
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs Abertas:" style="float: left;" /></b>
+			</f:facet>
+			#{tec.osTotalAberta.size()}	     
+	     </p:column>
+	     
+	     <p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs no Período:" style="float: left;" /></b>
+			</f:facet>	     
+	       #{tec.osTotalRelatorio.size()}
+	     </p:column>          
+	        
+	    </p:dataTable>
+	    </p:outputPanel>
+	    
+	 <p:outputPanel>
+    <p:outputLabel for="grupo3" value="Selecione o Grupo:" style="width:110px" />
+        <p:selectOneMenu  id="grupo3" value="#{relatorioBean.grupoRel3}"  editable="false" style="margin-left:10px">
+             <p:ajax listener="#{relatorioBean.onGrupoChange(3)}" update="grupoRel3" />
+            <f:selectItem itemLabel="Selecione" itemValue="" />
+            <f:selectItems value="#{relatorioBean.listaGrupoSelect}" />
+        </p:selectOneMenu>
+	     <p:dataTable value="#{relatorioBean.listaUsuarioGrupoRel3}" 
+        paginator="true" rows="25" style="width:600px" id="grupoRel3" rowStyleClass="#{tec.indisponivelNoPeriodo == true ? 'indisponivel_row' : ''}"
+         var="tec" type="ordered"  itemType="none" 
+        selection="#{relatorioBean.usuarioSelecionado}" 
+					rowKey="#{tec.id}">
+
+        <p:column style="width:150px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Nome:" style="float: left;" /></b>
+			</f:facet>        
+	        #{tec.userNameCalculado}
+	     </p:column>
+	     
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs Abertas:" style="float: left;" /></b>
+			</f:facet>
+			#{tec.osTotalAberta.size()}	     
+	     </p:column>
+	     
+	     <p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs no Período:" style="float: left;" /></b>
+			</f:facet>	     
+	       #{tec.osTotalRelatorio.size()}
+	     </p:column>     
+	        
+	    </p:dataTable>
+	    </p:outputPanel>
+	    
+	<p:outputPanel >
+    <p:outputLabel for="grupo4" value="Selecione o Grupo:" style="width:110px" />
+        <p:selectOneMenu  id="grupo4" value="#{relatorioBean.grupoRel4}"  editable="false" style="margin-left:10px">
+             <p:ajax listener="#{relatorioBean.onGrupoChange(4)}" update="grupoRel4" />
+            <f:selectItem itemLabel="Selecione" itemValue="" />
+            <f:selectItems value="#{relatorioBean.listaGrupoSelect}" />
+        </p:selectOneMenu>
+	    
+	    <p:dataTable value="#{relatorioBean.listaUsuarioGrupoRel4}" 
+        paginator="true" rows="25" style="width:600px" id="grupoRel4" rowStyleClass="#{tec.indisponivelNoPeriodo == true ? 'indisponivel_row' : ''}"
+         var="tec" type="ordered"  itemType="none" 
+        selection="#{relatorioBean.usuarioSelecionado}" 
+					rowKey="#{tec.id}">
+
+        <p:column style="width:150px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Nome:" style="float: left;" /></b>
+			</f:facet>        
+	        #{tec.userNameCalculado}
+	     </p:column>
+	     
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs Abertas:" style="float: left;" /></b>
+			</f:facet>
+			#{tec.osTotalAberta.size()}	     
+	     </p:column>
+	     
+	     <p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs no Período:" style="float: left;" /></b>
+			</f:facet>	     
+	      #{tec.osTotalRelatorio.size()}
+	     </p:column>     
+	        
+	    </p:dataTable>
+	    </p:outputPanel>
+	    
+	<p:outputPanel >
+    <p:outputLabel for="grupo5" value="Selecione o Grupo:" style="width:110px" />
+        <p:selectOneMenu  id="grupo5" value="#{relatorioBean.grupoRel5}"  editable="false" style="margin-left:10px">
+             <p:ajax listener="#{relatorioBean.onGrupoChange(5)}" update="grupoRel5" />
+            <f:selectItem itemLabel="Selecione" itemValue="" />
+            <f:selectItems value="#{relatorioBean.listaGrupoSelect}" />
+        </p:selectOneMenu>
+	    
+	      <p:dataTable value="#{relatorioBean.listaUsuarioGrupoRel5}" 
+        paginator="true" rows="25" style="width:600px" id="grupoRel5" rowStyleClass="#{tec.indisponivelNoPeriodo == true ? 'indisponivel_row' : ''}"
+         var="tec" type="ordered"  itemType="none" 
+        selection="#{relatorioBean.usuarioSelecionado}" 
+					rowKey="#{tec.id}">
+
+        <p:column style="width:150px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Nome:" style="float: left;" /></b>
+			</f:facet>        
+	        #{tec.userNameCalculado}
+	     </p:column>
+	     
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs Abertas:" style="float: left;" /></b>
+			</f:facet>
+			#{tec.osTotalAberta.size()}	     
+	     </p:column>
+	     
+	     <p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs no Período:" style="float: left;" /></b>
+			</f:facet>	     
+	       #{tec.osTotalRelatorio.size()}
+	     </p:column>     
+	        
+	    </p:dataTable>
+	    </p:outputPanel>
+	    
+	 <p:outputPanel>
+    <p:outputLabel for="grupo6" value="Selecione o Grupo:" style="width:110px" />
+        <p:selectOneMenu  id="grupo6" value="#{relatorioBean.grupoRel6}"  editable="false" style="margin-left:10px">
+             <p:ajax listener="#{relatorioBean.onGrupoChange(6)}" update="grupoRel6" />
+            <f:selectItem itemLabel="Selecione" itemValue="" />
+            <f:selectItems value="#{relatorioBean.listaGrupoSelect}" />
+        </p:selectOneMenu>
+	    <p:dataTable value="#{relatorioBean.listaUsuarioGrupoRel6}" rowStyleClass="#{tec.indisponivelNoPeriodo == true ? 'indisponivel_row' : ''}"
+        paginator="true" rows="25" style="width:600px" id="grupoRel6"
+         var="tec" type="ordered"  itemType="none" 
+        selection="#{relatorioBean.usuarioSelecionado}" 
+					rowKey="#{tec.id}">
+	     
+
+        <p:column style="width:150px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Nome:" style="float: left;" /></b>
+			</f:facet>        
+	       #{tec.userNameCalculado}
+	     </p:column>
+	     
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs Abertas:" style="float: left;" /></b>
+			</f:facet>
+			#{tec.osTotalAberta.size()}	     
+	     </p:column>
+	     
+	     <p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="OSs no Período:" style="float: left;" /></b>
+			</f:facet>	     
+	        #{tec.osTotalRelatorio.size()}
+	     </p:column>   
+	        
+	    </p:dataTable>
+	    </p:outputPanel>
+
+    </p:panelGrid>
+
+      <p:dialog header="Detalhe" widgetVar="listaTecnicoPopup" modal="true" 
+    showEffect="fade" hideEffect="fade" resizable="false" width="550" height="600">
+        <p:outputPanel id="listaTecnicoPanel" >
+        <h5 style="margin-top:0"><b>Nome: </b> <h:outputText value="#{relatorioBean.usuarioSelecionado.nome}"/></h5>
+
+ <p:dataTable value="#{testManagedBean.list}" 
+        paginator="true" rows="5" style="width:500px"
+         var="tec" type="ordered"  itemType="none" 
+        selection="#{relatorioBean.usuarioSelecionado}" 
+					rowKey="#{tec.id}">
+
+        <p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Iníco:" style="float: left;" /></b>
+			</f:facet>        
+	        01/11/2014
+	     </p:column>
+	     
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Fim:" style="float: left;" /></b>
+			</f:facet>	     
+	        10/11/2014
+	     </p:column>	     
+
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Motivo:" style="float: left;" /></b>
+			</f:facet>	     
+	        Atestado
+	     </p:column>
+	        
+	    </p:dataTable>
+	    <br/>
+<p:dataTable value="#{testManagedBean.list}" 
+        paginator="true" rows="5" style="width:500px"
+         var="tec" type="ordered"  itemType="none" 
+        selection="#{relatorioBean.usuarioSelecionado}" 
+					rowKey="#{tec.id}">
+
+        <p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="N.:" style="float: left;" /></b>
+			</f:facet>        
+	       1234
+	     </p:column>
+	     
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Status:" style="float: left;" /></b>
+			</f:facet>	     
+	        Finalizada
+	     </p:column>	     
+
+		<p:column style="width:100px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Data:" style="float: left;" /></b>
+			</f:facet>	     
+	        01/11/2014
+	     </p:column>
+	        
+	    </p:dataTable>
+
+
+        
+        </p:outputPanel>
+        
+	</p:dialog>
+    </h:form>
+			
+			
+	</ui:define>
+</ui:composition>
