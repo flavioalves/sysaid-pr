@@ -32,6 +32,8 @@
   ok - Nome da coluna actions -> Ações - OK
   ok - Alterar links de botões de ação - OK
   ok - Aumentar with do dialog de confirmação (arquivo template) - OK
+  
+  
 
 #### Lista de OSs
   - [A] Colocar filtro por status (filtro persistente)
