@@ -10,7 +10,6 @@ import org.omnifaces.cdi.ViewScoped;
 
 import br.gov.presidencia.facade.GrupoFacade;
 import br.gov.presidencia.model.Grupo;
-import br.gov.presidencia.model.GrupoDinamico;
 import br.gov.presidencia.model.Usuario;
 
 @Named

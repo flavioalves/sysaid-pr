@@ -49,6 +49,10 @@ public class RelatorioBean extends AbstractBean {
 	private String grupoRel4;
 	private String grupoRel5;
 	private String grupoRel6;
+	private String grupoRel7;
+	private String grupoRel8;
+	private String grupoRel9;
+	private String grupoRel10;
 
 	
     @PostConstruct
@@ -85,6 +89,23 @@ public class RelatorioBean extends AbstractBean {
 	   	 param = recuperaPorParam("grupoRel6");
 	   	if(param != null){
 	   		this.grupoRel6 =  param.getValor();
+	   	}
+	   	
+	   	param = recuperaPorParam("grupoRel7");
+	   	if(param != null){
+    		this.grupoRel7 =  param.getValor();
+    	}
+    	 param = recuperaPorParam("grupoRel8");
+    	if(param != null){
+    		this.grupoRel8 =  param.getValor();
+    	}
+    	 param = recuperaPorParam("grupoRel9");
+    	if(param != null){
+    		this.grupoRel9 =  param.getValor();
+    	}
+	   	 param = recuperaPorParam("grupoRel10");
+	   	if(param != null){
+	   		this.grupoRel10 =  param.getValor();
 	   	}
 
     }
@@ -171,6 +192,26 @@ public class RelatorioBean extends AbstractBean {
 			 param.setValor(this.getGrupoRel6());
 			 atualizaParamControle(param);
 			break;			
+		case 7:
+			param = recuperaPorParamNovo("grupoRel7");
+			 param.setValor(this.getGrupoRel7());
+			 atualizaParamControle(param);
+			break;
+		case 8:
+			 param = recuperaPorParamNovo("grupoRel8");
+			 param.setValor(this.getGrupoRel8());
+			 atualizaParamControle(param);
+			break;
+		case 9:
+			param = recuperaPorParamNovo("grupoRel9");
+			 param.setValor(this.getGrupoRel9());
+			 atualizaParamControle(param);
+			break;
+		case 10:
+			 param = recuperaPorParamNovo("grupoRel10");
+			 param.setValor(this.getGrupoRel10());
+			 atualizaParamControle(param);
+			break;			
 		}
 		
 		
@@ -181,7 +222,7 @@ public class RelatorioBean extends AbstractBean {
 			this.paramControleFacade.save(param);
 			this.displayInfoMessageToUser("Dados salvo com sucesso");
 		} catch (Exception e) {
-			this.displayErrorMessageToUser("NÃ£o foi possÃ­velsalvar dados. "+e.getMessage());
+			this.displayErrorMessageToUser("Não foi possível dados. "+e.getMessage());
 		}
 	}
     
@@ -202,27 +243,43 @@ public class RelatorioBean extends AbstractBean {
 	
 	
 	public List<Usuario> getListaUsuarioGrupoRel1(){
-		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel1, this.dataInicio, this.dataFim);
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel1, this.getDataInicio(), this.getDataFim());
 	}
 	
 	public List<Usuario> getListaUsuarioGrupoRel2(){
-		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel2, this.dataInicio, this.dataFim);
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel2, this.getDataInicio(), this.getDataFim());
 	}
 	
 	public List<Usuario> getListaUsuarioGrupoRel3(){
-		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel3, this.dataInicio, this.dataFim);
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel3, this.getDataInicio(), this.getDataFim());
 	}
 	
 	public List<Usuario> getListaUsuarioGrupoRel4(){
-		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel4, this.dataInicio, this.dataFim);
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel4, this.getDataInicio(), this.getDataFim());
 	}
 	
 	public List<Usuario> getListaUsuarioGrupoRel5(){
-		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel5, this.dataInicio, this.dataFim);
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel5, this.getDataInicio(), this.getDataFim());
 	}
 	
 	public List<Usuario> getListaUsuarioGrupoRel6(){
-		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel6, this.dataInicio, this.dataFim);
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel6, this.getDataInicio(), this.getDataFim());
+	}
+	
+	public List<Usuario> getListaUsuarioGrupoRel7(){
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel7, this.getDataInicio(), this.getDataFim());
+	}
+	
+	public List<Usuario> getListaUsuarioGrupoRel8(){
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel8, this.getDataInicio(), this.getDataFim());
+	}
+	
+	public List<Usuario> getListaUsuarioGrupoRel9(){
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel9, this.getDataInicio(), this.getDataFim());
+	}
+	
+	public List<Usuario> getListaUsuarioGrupoRel10(){
+		return this.getUsuarioFacade().listAllPorGrupoRelatorioPerido(this.grupoRel10, this.getDataInicio(), this.getDataFim());
 	}
 
 
@@ -236,6 +293,9 @@ public class RelatorioBean extends AbstractBean {
 
 
 	public Date getDataInicio() {
+		if(dataInicio == null){
+			dataInicio = new Date();
+		}
 		return dataInicio;
 	}
 
@@ -244,6 +304,9 @@ public class RelatorioBean extends AbstractBean {
 	}
 
 	public Date getDataFim() {
+		if(dataFim == null){
+			dataFim = new Date();
+		}
 		return dataFim;
 	}
 
@@ -334,6 +397,42 @@ public class RelatorioBean extends AbstractBean {
 
 	public void setGrupoRel6(String grupoRel6) {
 		this.grupoRel6 = grupoRel6;
+	}
+	
+	
+
+	public String getGrupoRel7() {
+		return grupoRel7;
+	}
+
+	public void setGrupoRel7(String grupoRel7) {
+		this.grupoRel7 = grupoRel7;
+	}
+
+	public String getGrupoRel9() {
+		return grupoRel9;
+	}
+
+	public void setGrupoRel9(String grupoRel9) {
+		this.grupoRel9 = grupoRel9;
+	}
+
+	public String getGrupoRel10() {
+		return grupoRel10;
+	}
+
+	public void setGrupoRel10(String grupoRel10) {
+		this.grupoRel10 = grupoRel10;
+	}
+	
+	
+
+	public String getGrupoRel8() {
+		return grupoRel8;
+	}
+
+	public void setGrupoRel8(String grupoRel8) {
+		this.grupoRel8 = grupoRel8;
 	}
 
 	/**

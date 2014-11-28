@@ -26,12 +26,13 @@
 ### TODO:
 
 #### Tipo de indisponibilidade
-  - Título da tela - OK
-  - Alterar texto da descrição- OK
-  - Margens e improves de arte final no layout - OK
-  - Nome da coluna actions -> Ações - OK
-  - Alterar links de botões de ação - OK
-  - Aumentar with do dialog de confirmação (arquivo template) - OK
+  ok - Título da tela - OK
+  ok - Alterar texto da descrição - OK
+  ok - Margens e improves de arte final no layout - OK
+  ok - Nome da coluna actions -> Ações - OK
+  ok - Alterar links de botões de ação - OK
+  ok - Aumentar with do dialog de confirmação (arquivo template) - OK
+  
 
 #### Lista de OSs
   - [A] Colocar filtro por status (filtro persistente)
@@ -59,25 +60,28 @@
 OK - Só apresentar a tabela após a seleção do grupo
 
 #### Modal de Programar indisponibilidade
-- Diminuir a margem inferior da modal
+OK - Diminuir a margem inferior da modal
 OK - Testes com envio de email
-- Recuperar o E-mail do responsável pelo Grupo para utilizar no envio do e-mail Comunicando a Indisponibilidade
+OK - Recuperar o E-mail do responsável pelo Grupo para utilizar no envio do e-mail Comunicando a Indisponibilidade
 
 #### Relatório
-- Apresentar um label da data atual (Default)
-- Melhorar estilo da pesquisa por período
-- Aumentar o número de BOX dos Grupos para 10
-- Pintar de Azul a linha do usuário indisponível no Período
-- Verificar total de OS no período
+ok - Apresentar um label da data atual (Default)
+ok - Melhorar estilo da pesquisa por período
+ok- Aumentar o número de BOX dos Grupos para 10
+ok - Pintar de Azul a linha do usuário indisponível no Período
+ok - Verificar total de OS no período
 
 
 #### Geral
 - Melhor marca na página atual da paginação
 
 #### Grupo dinamico
-OK- Adicionar botao par abrir popup para seleção de responsável pelo grupo 
+OK- Adicionar botao par abrir popup para seleção de responsável pelo grupo
+ 
 OK- Criar popup com lista de usuários do grupo com opção de seleção de somente um
+
 OK- Permitir alterar a seleção do Responsável pelo Grupo
+
 OK- Após a seleção do responsável, mostrar na tabela dos Grupos - criar coluna com o nome do responsável pelo grupo
 
 #### Grupo de indisponibilidade ???

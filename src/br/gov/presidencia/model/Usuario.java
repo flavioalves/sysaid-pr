@@ -48,7 +48,7 @@ public class Usuario extends GenericModel implements Serializable{
 	  //@Formula(" (SELECT COUNT(*) from service_req os where os.sr_type = 1 and os.responsibility = USER_NAME)")
 	
 	  @OneToMany(mappedBy ="tecnico", fetch = FetchType.LAZY)
-	  @Where(clause = " TRUNC(assigned_data) = TRUNC(SYSDATE) ")
+	  @Where(clause = " TRUNC(assigned_data) = TRUNC(SYSDATE) " )
 	  private List<FilaOrdemServico> listaFilaOrdemServico;
 	  
 	  @OneToMany(mappedBy ="usuario", fetch = FetchType.LAZY)

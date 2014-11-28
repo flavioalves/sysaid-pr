@@ -50,7 +50,7 @@
 </p:outputPanel>
 	    
     <p:dialog header="Programar Indisponibilidade" widgetVar="listaTecnicoPopup" modal="true" 
-    showEffect="fade" hideEffect="fade" resizable="false" width="680" height="600" position="top">
+    showEffect="fade" hideEffect="fade" resizable="false" width="680" height="500" position="top">
         <p:outputPanel id="listaTecnicoPanel" >
         <h5 style="margin-top:0"><b>Nome: </b> <h:outputText value="#{indisponibilidadeBean.tecnico.userNameCalculado}"/></h5>
 
@@ -123,7 +123,7 @@
          </p:outputPanel>
          <p:outputPanel>
         <b><p:outputLabel for="just" value="Justificativa:"  />: </b><br/>
-        <p:inputTextarea rows="5" id="just" cols="50" counter="display" required="true" value="#{indisponibilidadeBean.indisponibilidade.justificativa}" maxlength="150" counterTemplate="{0} restantes" autoResize="false" />
+        <p:inputTextarea rows="5" id="just" cols="60" counter="display" required="true" value="#{indisponibilidadeBean.indisponibilidade.justificativa}" maxlength="150" counterTemplate="{0} restantes" autoResize="false" />
     	<h:outputText id="display" />
     	</p:outputPanel>
     	</p:panelGrid>
