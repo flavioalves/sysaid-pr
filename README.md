@@ -67,14 +67,20 @@ OK - Só apresentar a tabela após a seleção do grupo
 
 #### Modal de Programar indisponibilidade
 OK - Diminuir a margem inferior da modal
+
 OK - Testes com envio de email
+
 OK - Recuperar o E-mail do responsável pelo Grupo para utilizar no envio do e-mail Comunicando a Indisponibilidade
 
 #### Relatório
 ok - Apresentar um label da data atual (Default)
+
 ok - Melhorar estilo da pesquisa por período
+
 ok- Aumentar o número de BOX dos Grupos para 10
+
 ok - Pintar de Azul a linha do usuário indisponível no Período
+
 ok - Verificar total de OS no período
 
 
