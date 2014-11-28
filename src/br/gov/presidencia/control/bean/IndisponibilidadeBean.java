@@ -52,6 +52,8 @@ public class IndisponibilidadeBean extends AbstractBean {
 	
 	private Usuario tecnico;
 	
+	private Usuario responsavelGrupo;
+	
 	private String grupoId;
 	
     @PostConstruct
@@ -92,6 +94,12 @@ public class IndisponibilidadeBean extends AbstractBean {
 	public void onGrupoChange(){
 		if(grupoId != null){
 			Grupo grupo = this.grupoFacade.find(grupoId);
+			if(grupo.getDinamico() != null && grupo.getDinamico().getResponsavel() != null){
+				setResponsavelGrupo(grupo.getDinamico().getResponsavel());	
+			}else{
+				super.displayErrorMessageToUser("Grupo sem Responsável, defina na opção de Grupo Dinâmico.");
+			}
+			
 			this.listaUsuarios = grupo.getTecnicos();
 		}
 	}
@@ -147,7 +155,7 @@ public class IndisponibilidadeBean extends AbstractBean {
 		
 		EmailNotification notitifacao = new EmailNotification();
 		try {
-			notitifacao.envarEmailUsuario(null, this.getTecnico(), getIndisponibilidade());
+			notitifacao.envarEmailUsuario(getResponsavelGrupo(), this.getTecnico(), getIndisponibilidade());
 		} catch (EmailException e) {
 			super.displayErrorMessageToUser("Erro ao enviar e-mail de Notificação. "+e.getMessage());
 			e.printStackTrace();
@@ -265,6 +273,14 @@ public class IndisponibilidadeBean extends AbstractBean {
 
 	public void setListaUsuarios(List<Usuario> listaUsuarios) {
 		this.listaUsuarios = listaUsuarios;
+	}
+
+	public Usuario getResponsavelGrupo() {
+		return responsavelGrupo;
+	}
+
+	public void setResponsavelGrupo(Usuario responsavelGrupo) {
+		this.responsavelGrupo = responsavelGrupo;
 	}
 
 

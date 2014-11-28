@@ -23,10 +23,14 @@ public class EmailNotification {
 		email.setFrom("centraldeservicos@planalto.gov.br");
 		email.setSubject("Notificação de Cadastro de Indisponibilidade de Técnico");
 		email.setMsg("Aviso de de Indisponibilidade do(a) Técnico(a): "+ tecnico.getUserNameCalculado() +" no periodo de "
-		+sdf.format(indisp.getInicio()) +" - "+ sdf.format(indisp.getFim()) +" Motivo: "+indisp.getTipo().getNome() );
-		//email.addTo(user.getEmail());
-		email.addTo("alvaroqv@gmail.com");
-		email.send();
+		+sdf.format(indisp.getInicio()) +" a "+ sdf.format(indisp.getFim()) +" Motivo: "+indisp.getTipo().getNome() );
+		if(user.getEmail() != null){
+			email.addTo(user.getEmail());
+			email.send();
+		}
+		
+		//email.addTo("alvaroqv@gmail.com");
+		
 		
 		return false;
 	}
