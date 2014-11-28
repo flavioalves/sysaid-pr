@@ -3,13 +3,18 @@
 ### PASSO A PASSO PARA DEPLOY DO MÓDULO (MYSQL)
 
 1. Rodar o script para criar os menus e as tabelas da aplicação 
+-base_dados_mod_grupodinamico.sql
 
 2. Adicionar a configuração de banco no arquivo context do tomcat 
+- No tomcat de produção a configuração deve ser feita no arquivo server.xml seguindo o modelo do módulo financeiro
 
+<!-- Configuracao do MySql --!>
   <Resource name="jdbc/sysaid" auth="Container"
     type="javax.sql.DataSource" driverClassName="com.mysql.jdbc.Driver"
     url="jdbc:mysql://localhost:3306/sysaid"
     username="root" password="rootdb" maxActive="20" maxIdle="10" maxWait="-1"/>
+	
+<!-- /Configuracao do MySql -->
 
 3. No arquivo persistence.xml do projeto, verificar se a configuração do dialeto está setada corretamente:
   <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
@@ -30,9 +35,14 @@
 
 #### Lista de OSs
   - [A] Colocar filtro por status (filtro persistente)
+  - [A] Colocar verificacao na query select para recuperar somente OS nao arquivadas
   - Ajustar tamanhos de colunas
   - [A] Ao selecionar 2 OS, estando uma bloqueada por seleção de outro usuário, bloquear o botão de carregar
   - [A] Ao vincular uma OS a um técnico, disponibilizar a seleção de OSs na lista (liberar os depois que salvar vinculo)
+  - [A] Refazer a logica de bloqueio de seleção de OS por mais de um usuário 
+  - [A] Verificar dados importante para equipe da Central de Serviços
+  - [A] Verificar quais dados não estão sendo apresentados na tabela de lista de OS
+  
 
   ######## Modal Seleção de tecnico disponível
   - alterar label -> OS em aberto para "OS ativa";
@@ -46,15 +56,24 @@
 #### Modal de Programar indisponibilidade
 - Diminuir a margem inferior da modal
 - Testes com envio de email
+- Recuperar o E-mail do responsável pelo Grupo para utilizar no envio do e-mail Comunicando a Indisponibilidade
 
 #### Relatório
 - Apresentar um label da data atual (Default)
 - Melhorar estilo da pesquisa por período
+- Aumentar o número de BOX dos Grupos para 10
+- Pintar de Azul a linha do usuário indisponível no Período
 
 #### Geral
 - Melhor marca na página atual da paginação
 
-#### Grupo de indisponibilidade
+#### Grupo dinamico
+- Adicionar botao par abrir popup para seleção de responsável pelo grupo
+- Criar popup com lista de usuários do grupo com opção de seleção de somente um
+- Permitir alterar a seleção do Responsável pelo Grupo
+- Após a seleção do responsável, mostrar na tabela dos Grupos - criar coluna com o nome do responsável pelo grupo
+
+#### Grupo de indisponibilidade ???
   - Adicionar coluna de responsável pela equipe
   - Ajustar tamanho da tabela
   - Ao selecionar a linha na tabela, apresentar o item selecionado em verde (background-color: #E6F3E5)
