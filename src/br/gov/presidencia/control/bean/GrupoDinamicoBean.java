@@ -10,6 +10,8 @@ import org.omnifaces.cdi.ViewScoped;
 
 import br.gov.presidencia.facade.GrupoFacade;
 import br.gov.presidencia.model.Grupo;
+import br.gov.presidencia.model.GrupoDinamico;
+import br.gov.presidencia.model.Usuario;
 
 @Named
 @ViewScoped
@@ -20,26 +22,46 @@ public class GrupoDinamicoBean extends AbstractBean implements Serializable{
 	
 	private List<Grupo> lista;
 	
+	private Grupo grupoSelecionado;
+
+	
 	public List<Grupo> getListaBase(){
 			return this.getGrupoFacade().listAll();
 	}
 	
-	
-	
 	public String salvar(){
 		for (Grupo grupo : this.getLista()) {
-			//System.out.println(grupo.getNome() +" - "+ grupo.getDinamico());
-			try {
-				this.grupoFacade.save(grupo);
-			} catch (Exception e) {
-				super.displayErrorMessageToUser("Erro ao Salvar o Grupo: "+grupo.getNome());
-				e.printStackTrace();
-			}
+			salvar(grupo);
 		}
-		super.displayInfoMessageToUser("Salvo com sucesso");
 		return null;
 	}
+
+	private void salvar(Grupo grupo) {
+		try {
+			this.grupoFacade.save(grupo);
+		} catch (Exception e) {
+			super.displayErrorMessageToUser("Erro ao Salvar o Grupo: "+grupo.getNome());
+			e.printStackTrace();
+		}
+		super.displayInfoMessageToUser("Salvo com sucesso");
+	}
+		
+	public void selecionarTecnico(Usuario tec){
+		this.grupoSelecionado.getDinamico().setResponsavel(tec);
+		this.salvar(this.grupoSelecionado);
+	}
 	
+	public void selecionarGrupo(Grupo grupo){
+		this.grupoSelecionado = grupo;
+	}
+	
+	public List<Usuario> getListaUsuarios() {
+		if(this.grupoSelecionado != null){
+			this.grupoSelecionado = this.grupoFacade.getDao().find(grupoSelecionado.getNome());
+			return this.grupoSelecionado.getTecnicos();
+		}
+		return null;
+	}
 
 	public GrupoFacade getGrupoFacade() {
 		return grupoFacade;
@@ -61,6 +83,16 @@ public class GrupoDinamicoBean extends AbstractBean implements Serializable{
 		return this.lista;
 	}
 
+
+	public Grupo getGrupoSelecionado() {
+		return grupoSelecionado;
+	}
+
+
+
+	public void setGrupoSelecionado(Grupo grupoSelecionado) {
+		this.grupoSelecionado = grupoSelecionado;
+	}
 
 
 

@@ -1,13 +1,10 @@
 package br.gov.presidencia.facade;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import br.gov.presidencia.dao.GenericDao;
 import br.gov.presidencia.dao.GrupoDao;
@@ -27,7 +24,7 @@ public class GrupoFacade extends GenericFacade<Grupo>{
 	public GenericDao<Grupo> getDao() {
 		return grupoDao;
 	}
-	
+		
 	public List<Grupo> listAll(){
 		List<Grupo> lista =  this.getGrupoDao().findAllAtivo();
 		for(Grupo g : lista){
@@ -40,7 +37,7 @@ public class GrupoFacade extends GenericFacade<Grupo>{
 		return lista;
 	}
 	
-	public void lerPermissaoGrupo(String grupoNome){
+	public Map<String, String> lerPermissaoGrupo(String grupoNome){
 		
 		String result = this.grupoDao.carregaDadosPermissao(grupoNome);
 		
@@ -52,11 +49,10 @@ public class GrupoFacade extends GenericFacade<Grupo>{
         magicApi.registerConverter(new MapEntryConverter());
         magicApi.alias("userPermissions", Map.class);
 
-        Map<String, String> extractedMap = (Map<String, String>) magicApi.fromXML(result);
+        @SuppressWarnings("unchecked")
+		Map<String, String> extractedMap = (Map<String, String>) magicApi.fromXML(result);
         
-        assert extractedMap.get("name").equals("chris");
-        assert extractedMap.get("island").equals("faranga");
-
+        return extractedMap;
 	}
 	
 	
