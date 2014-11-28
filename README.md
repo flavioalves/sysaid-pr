@@ -35,6 +35,10 @@
 
 #### Lista de OSs
   - [A] Colocar filtro por status (filtro persistente)
+  - [A] Verificar dados que não estão sendo apresentados na lista de OS
+  - [A] Mostrar descrição da OS
+  - [A] Apresentar informação da SUB OS
+  - [A] Ordenar lista de OS por data de criação DESC (mais nova vai para o Topo) 
   - [A] Colocar verificacao na query select para recuperar somente OS nao arquivadas
   - Ajustar tamanhos de colunas
   - [A] Ao selecionar 2 OS, estando uma bloqueada por seleção de outro usuário, bloquear o botão de carregar
@@ -42,6 +46,7 @@
   - [A] Refazer a logica de bloqueio de seleção de OS por mais de um usuário 
   - [A] Verificar dados importante para equipe da Central de Serviços
   - [A] Verificar quais dados não estão sendo apresentados na tabela de lista de OS
+  - [A] Melhor visualização das informações na tabela de OSs em aberto no popup de vinculo
   
 
   ######## Modal Seleção de tecnico disponível
@@ -63,6 +68,8 @@ OK - Testes com envio de email
 - Melhorar estilo da pesquisa por período
 - Aumentar o número de BOX dos Grupos para 10
 - Pintar de Azul a linha do usuário indisponível no Período
+- Verificar total de OS no período
+
 
 #### Geral
 - Melhor marca na página atual da paginação
