@@ -2,8 +2,6 @@ package br.gov.presidencia.dao;
 
 import java.io.Serializable;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +58,7 @@ public abstract class GenericDao<T> implements Serializable {
 	public void save(T entity) {
 		getEntityManager().persist(entity);
 	}
-
+	
 	public void delete(Object id, Class<T> classe) {
 		T entityToBeRemoved = getEntityManager().getReference(classe, id);
 		 
@@ -172,6 +170,12 @@ public abstract class GenericDao<T> implements Serializable {
 		return cb.equal(rootCriteria.get("ativo"), 1);
 	}
 	
+	
+	/**
+	 * WorkAround para resolver o problema de tabela dinamica do Sysaid
+	 * @return
+	 * @throws SQLException
+	 */
 	protected  Connection getConnection() throws SQLException{
 
 		Session session = (Session) em.getDelegate();

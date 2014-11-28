@@ -26,12 +26,12 @@
 ### TODO:
 
 #### Tipo de indisponibilidade
-  - Título da tela
-  - Alterar texto da descrição
-  - Margens e improves de arte final no layout
-  - Nome da coluna actions -> Ações
-  - Alterar links de botões de ação
-  - Aumentar with do dialog de confirmação (arquivo template)
+  - Título da tela - OK
+  - Alterar texto da descrição - OK
+  - Margens e improves de arte final no layout - OK
+  - Nome da coluna actions -> Ações - OK
+  - Alterar links de botões de ação - OK
+  - Aumentar with do dialog de confirmação (arquivo template) - OK
 
 #### Lista de OSs
   - [A] Colocar filtro por status (filtro persistente)
@@ -51,11 +51,11 @@
   - hover sobre o número -> hover sobre célula
 
 #### Programar indisponibilidade
-- Só apresentar a tabela após a seleção do grupo
+OK - Só apresentar a tabela após a seleção do grupo
 
 #### Modal de Programar indisponibilidade
 - Diminuir a margem inferior da modal
-- Testes com envio de email
+OK - Testes com envio de email
 - Recuperar o E-mail do responsável pelo Grupo para utilizar no envio do e-mail Comunicando a Indisponibilidade
 
 #### Relatório
@@ -68,10 +68,10 @@
 - Melhor marca na página atual da paginação
 
 #### Grupo dinamico
-- Adicionar botao par abrir popup para seleção de responsável pelo grupo
-- Criar popup com lista de usuários do grupo com opção de seleção de somente um
-- Permitir alterar a seleção do Responsável pelo Grupo
-- Após a seleção do responsável, mostrar na tabela dos Grupos - criar coluna com o nome do responsável pelo grupo
+OK- Adicionar botao par abrir popup para seleção de responsável pelo grupo 
+OK- Criar popup com lista de usuários do grupo com opção de seleção de somente um
+OK- Permitir alterar a seleção do Responsável pelo Grupo
+OK- Após a seleção do responsável, mostrar na tabela dos Grupos - criar coluna com o nome do responsável pelo grupo
 
 #### Grupo de indisponibilidade ???
   - Adicionar coluna de responsável pela equipe

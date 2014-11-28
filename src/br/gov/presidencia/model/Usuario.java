@@ -33,7 +33,7 @@ public class Usuario extends GenericModel implements Serializable{
 		@Column(name = "LAST_NAME", updatable = false, insertable= false)
 		private String sobrenome;
 
-		@Column(name = "CALCULATED_USER_NAME", updatable = false, insertable= false)
+		@Column(name = "CALCULATED_USER_NAME", updatable = false,  insertable= false)
 		private String userNameCalculado;
 		
 		@Column(name="EMAIL_ADDRESS", updatable = false, insertable= false)

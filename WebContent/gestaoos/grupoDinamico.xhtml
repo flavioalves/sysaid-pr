@@ -17,7 +17,7 @@
 		<br />
 		<h:form id="form" styleClass="medium-form">
 			<br />
-			<p:dataTable var="grupo" value="#{grupoDinamicoBean.lista}"
+			<p:dataTable var="grupo" value="#{grupoDinamicoBean.lista}" id="listGrupo"
 				paginator="true" rows="100" styleClass="default-table">
 
 				<f:facet name="header">
@@ -39,6 +39,25 @@
 					</f:facet> 
           			 #{grupo.nome}
         		</p:column>
+        		
+        		<p:column>
+					<f:facet name="header">
+						<div align="left">
+							<h:outputText value="Nome Responsável" styleClass="title-column" />
+						</div>
+					</f:facet> 
+          			 #{grupo.dinamico.responsavel.userNameCalculado}
+        		</p:column>
+
+				<p:column style="width:45px;text-align:center">
+				
+					<p:commandButton update=":form:listaTecnicoPanel" process="@this"
+						action="#{grupoDinamicoBean.selecionarGrupo(grupo)}"
+						oncomplete="PF('listaTecnicoPopup').show()" icon="ui-icon-search"
+						title="View">
+					</p:commandButton>
+					
+				</p:column>
 
 			</p:dataTable>
 
@@ -46,6 +65,39 @@
 			<h:panelGroup layout="block" styleClass="form-actions">
 				<p:commandButton value="Salvar" icon="ui-icon-disk" action="#{grupoDinamicoBean.salvar}" />
 			</h:panelGroup>
+			
+			    <p:dialog header="Responsável pelo Grupo" widgetVar="listaTecnicoPopup" modal="true" 
+   				 showEffect="fade" hideEffect="fade" resizable="false" width="330" height="400" position="top">
+       
+        <p:outputPanel id="listaTecnicoPanel" >
+        <h5 style="margin-top:0"><b>Grupo: </b> <h:outputText value="#{grupoDinamicoBean.grupoSelecionado.nome}"/></h5>
+           
+        <p:dataTable value="#{grupoDinamicoBean.listaUsuarios}" 
+        paginator="true" rows="25" style="width:300px"
+        id="listaTecnicos" var="tec" type="ordered"  itemType="none" 
+					rowKey="#{tec.id}">
+        <f:facet name="header">
+          Técnicos
+        </f:facet>
+
+        <p:column style="width:150px">
+	     	<f:facet name="header" >
+				<b><h:outputText value="Nome:" style="float: left;" /></b>
+			</f:facet>        
+	        #{tec.userNameCalculado}
+	     </p:column>
+	     
+	     <p:column style="width:32px;text-align: center">
+             <p:commandButton update=":form:listGrupo" process="@this"   action="#{grupoDinamicoBean.selecionarTecnico(tec)}" 
+             oncomplete="PF('listaTecnicoPopup').hide()"
+              icon="ui-icon-disk" title="OK">
+            </p:commandButton>
+        </p:column>
+	        
+	    </p:dataTable>
+        
+        </p:outputPanel>
+        </p:dialog>
 
 		</h:form>
 

@@ -2,7 +2,11 @@ package br.gov.presidencia.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -23,7 +27,20 @@ public class GrupoDinamico extends GenericModel {
 	@Column
 	@Type(type="yes_no")
 	private Boolean ativo;
+
+	@OneToOne(optional = true, fetch = FetchType.EAGER)
+	@JoinColumn(name="user_name", referencedColumnName="user_name")
+	private Usuario responsavel;
 	
+
+	public Usuario getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(Usuario responsavel) {
+		this.responsavel = responsavel;
+	}
+
 	public String getNome() {
 		return nome;
 	}

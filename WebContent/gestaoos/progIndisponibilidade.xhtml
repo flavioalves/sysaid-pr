@@ -18,16 +18,18 @@
 	
 <p:outputLabel for="grupo" value="#{msg['menu.vinculo.popup.grupo']} :" style="float:left"/>
         <p:selectOneMenu  id="grupo" value="#{indisponibilidadeBean.grupoId}"  editable="false" style="margin-left:10px">
-             <p:ajax listener="#{indisponibilidadeBean.onGrupoChange}" update="listaTecnicos" />
+             <p:ajax listener="#{indisponibilidadeBean.onGrupoChange}" update=":form:painelLista" />
             <f:selectItem itemLabel="Selecione" itemValue="" />
             <f:selectItems value="#{indisponibilidadeBean.listaGrupoSelect}" />
         </p:selectOneMenu>
-        
+
+<p:outputPanel id="painelLista">
+
         <p:dataTable value="#{indisponibilidadeBean.listaUsuarios}" 
-        paginator="true" rows="25" style="width:300px"
+        paginator="true" rows="25" style="width:300px" 
         id="listaTecnicos" var="tec" type="ordered"  itemType="none" 
-					rowKey="#{tec.id}">
-        <f:facet name="header">
+					rowKey="#{tec.id}" rendered="#{!empty indisponibilidadeBean.listaUsuarios}">
+        <f:facet name="header" >
           Técnicos
         </f:facet>
 
@@ -44,17 +46,20 @@
         </p:column>
 	        
 	    </p:dataTable>
+
+</p:outputPanel>
 	    
     <p:dialog header="Programar Indisponibilidade" widgetVar="listaTecnicoPopup" modal="true" 
     showEffect="fade" hideEffect="fade" resizable="false" width="680" height="600" position="top">
         <p:outputPanel id="listaTecnicoPanel" >
         <h5 style="margin-top:0"><b>Nome: </b> <h:outputText value="#{indisponibilidadeBean.tecnico.userNameCalculado}"/></h5>
 
+
 	<p:dataTable value="#{indisponibilidadeBean.tecnico.indisponibilidades}" 
-        paginator="true" rows="2" style="width:550px"
+        paginator="true" rows="2" style="width:550px" 
         id="listaIndisp" var="indisp" type="ordered"   
          
-					rowKey="#{indisp.id}">
+					rowKey="#{indisp.id}" >
         <f:facet name="header">
           Últimas Indisponibilidades do Técnico
         </f:facet>
@@ -95,6 +100,7 @@
         </p:column>
 	        
 	    </p:dataTable>
+
 
 <p:separator/>
 <p:outputPanel id="indispPanel">
