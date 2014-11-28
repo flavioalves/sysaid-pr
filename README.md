@@ -21,11 +21,11 @@
 ### TODO:
 
 #### Tipo de indisponibilidade
-  - Título da tela
-  - Alterar texto da descrição
-  - Margens e improves de arte final no layout
-  - Nome da coluna actions -> Ações
-  - Alterar links de botões de ação
+  - Título da tela - OK
+  - Alterar texto da descrição- OK
+  - Margens e improves de arte final no layout - OK
+  - Nome da coluna actions -> Ações - OK
+  - Alterar links de botões de ação - OK
   - Aumentar with do dialog de confirmação (arquivo template)
 
 #### Lista de OSs
@@ -60,5 +60,20 @@
   - Ao selecionar a linha na tabela, apresentar o item selecionado em verde (background-color: #E6F3E5)
   - Editar e excluir - links com botões e ícones
 
-
+#### Feedbacks do cliente
+  - Atendentes Nívea, Fátima, Núbia
+  - Filtro por status (aberta, pendente-sub-os,...)
+  - Existem alguns dados que não estão sendo apresentados na lista de OS
+  - Possibilidade de vincular mais de uma OS para um técnico (testar)
+  - Na lista de OSs, ordenar pela data/hora de criação (mais novas no topo da tela)
+  - Opção para edição de OS - Link para edição
+  - O total de OS vinculadas não está sendo apresentadas
+  - No relatório, o total de OS do período nào está sendo contabilizado
+  - Na informação de OSs em aberto, na tela de vínculo - aumentar width para melhor visualização do detalhe
+  - Tratar OSs arquivadas e não arquivadas
+  - TESTES DE CADASTRO DE OS NA FORMA NATURAL
+  - Tela de Vínculo da OS
+    - É importante ver a descrição da OS.
+    - Categoria, sub-categoria e assunto
+    - Apresentar Informação do status das SUB-OS  
 
