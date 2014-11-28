@@ -39,7 +39,6 @@
   ok - Aumentar with do dialog de confirmação (arquivo template) - OK
   
   
-  
 
 #### Lista de OSs
   - [A] Colocar filtro por status (filtro persistente)
