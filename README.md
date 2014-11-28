@@ -27,11 +27,17 @@
 
 #### Tipo de indisponibilidade
   ok - Título da tela - OK
+  
   ok - Alterar texto da descrição - OK
+  
   ok - Margens e improves de arte final no layout - OK
+  
   ok - Nome da coluna actions -> Ações - OK
+  
   ok - Alterar links de botões de ação - OK
+  
   ok - Aumentar with do dialog de confirmação (arquivo template) - OK
+  
   
   
 
