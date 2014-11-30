@@ -24,8 +24,13 @@ public class OrdemServico extends GenericModel implements Serializable {
 
 	private String classificacao;
 	
+	private String titulo;
+	
+	private String descricao;
 
 	private String categoria;
+	
+	private String subCategoria;
 
 	private String contato;
 	
@@ -139,10 +144,29 @@ public class OrdemServico extends GenericModel implements Serializable {
 		this.version = version;
 	}
 
+	public String getSubCategoria() {
+		return subCategoria;
+	}
 
+	public void setSubCategoria(String subCategoria) {
+		this.subCategoria = subCategoria;
+	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
 
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
 
-
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 
 	@Override
 	public int hashCode() {

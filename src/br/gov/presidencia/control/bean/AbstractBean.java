@@ -17,7 +17,6 @@ import org.primefaces.context.RequestContext;
 
 import br.gov.presidencia.facade.UsuarioFacade;
 import br.gov.presidencia.model.Usuario;
-import br.gov.presidencia.util.ControleSelecaoSingleton;
 import br.gov.presidencia.util.JSFMessageUtil;
 
 public abstract class AbstractBean implements Serializable {
@@ -169,44 +168,13 @@ public abstract class AbstractBean implements Serializable {
 		return FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(chave);
 	}
 	
-	public void saveObjectInAppContext(String chave, Object obj){
-		/*FacesContext context = FacesContext.getCurrentInstance();
-	    ExternalContext externalContext = context.getExternalContext();
-	    HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-	    request.getSession().getServletContext().setAttribute(chave, obj);
-		//FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put(chave, obj);
-		 */
-		ControleSelecaoSingleton.getInstance().saveObjectInAppContext(chave, obj);
-	}
+	/*FacesContext context = FacesContext.getCurrentInstance();
+    ExternalContext externalContext = context.getExternalContext();
+    HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+    request.getSession().getServletContext().setAttribute(chave, obj);
+	//FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put(chave, obj);
+	 */
 	
-	public Boolean isObjectInAppContext(String chave){
-	/*	//return FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().containsKey(chave);
-		FacesContext context = FacesContext.getCurrentInstance();
-	    ExternalContext externalContext = context.getExternalContext();
-	    HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-	    return ( request.getSession().getServletContext().getAttribute(chave) != null);*/
-		return ControleSelecaoSingleton.getInstance().isObjectInAppContext(chave);
-	}
-	
-	public Object getObjectInAppContext(String chave){
-	/*	FacesContext context = FacesContext.getCurrentInstance();
-	    ExternalContext externalContext = context.getExternalContext();
-	    HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-	    return request.getSession().getServletContext().getAttribute(chave);
-		
-		//return FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get(chave);
-		 */
-		return ControleSelecaoSingleton.getInstance().getObjectInAppContext(chave);
-	}
-	
-	public void removeObjectInAppContext(String chave){
-	/*	FacesContext context = FacesContext.getCurrentInstance();
-	    ExternalContext externalContext = context.getExternalContext();
-	    HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-	    request.getSession().getServletContext().removeAttribute(chave);*/
-		//return FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().remove(chave);
-		ControleSelecaoSingleton.getInstance().removeObjectInAppContext(chave);
-	}
 	
 
 	/**

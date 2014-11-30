@@ -1,5 +1,6 @@
 package br.gov.presidencia.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Named;
@@ -29,16 +30,22 @@ public class GrupoDao extends GenericDao<Grupo> {
 	private static final long serialVersionUID = 4770158458977556376L;
 
 
-	public String carregaDadosPermissao(String nome) {
+	public List<String> carregaDadosPermissao(List<String> nome) {
 		
-		String sql = "SELECT PERMISSION FROM USER_GROUPS WHERE group_name = :gruponome";
+		List<String> resultado =new ArrayList<String>();
+		String sql = "SELECT PERMISSION FROM USER_GROUPS WHERE group_name in :gruponome";
 	
 		Query query = getEntityManager().createNativeQuery(sql);
 		query.setParameter("gruponome", nome);
 		@SuppressWarnings("unchecked")
-		byte[]retorno = (byte[])query.getSingleResult();
 		
-		return new String(retorno);
+		List<Object> objs = query.getResultList();
+		for(Object obj : objs){
+			resultado.add(new String((byte[])obj));
+		}
+		
+		return resultado;
+
 	}
 
 }

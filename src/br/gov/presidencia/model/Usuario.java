@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -22,6 +24,10 @@ public class Usuario extends GenericModel implements Serializable{
 	
 	 @Transient
 	 private Integer id;
+	 
+	 public static int All = 1;
+	 public static int AssignedOnly = 2;
+	 public static int AssigendGroupAndAssignedOnly =3;
 	 
 		@Id
 		@Column(name="USER_NAME", updatable = false, insertable= false)
@@ -54,6 +60,12 @@ public class Usuario extends GenericModel implements Serializable{
 	  @OneToMany(mappedBy ="usuario", fetch = FetchType.LAZY)
 	  @Where(clause = "sr_type = 1 and close_time is null")
 	  private List<ResumoOrdemServico> osTotalAberta;
+	  
+		@OneToMany(fetch = FetchType.LAZY)
+		@JoinTable(name="user2group", 
+			joinColumns =@JoinColumn(name="USER_NAME"), 
+			inverseJoinColumns = @JoinColumn(name="group_name"))
+		private List<Grupo> grupos;
 	  
 	  @Transient
 	  private Boolean indisponivelNoPeriodo;
@@ -166,6 +178,27 @@ public class Usuario extends GenericModel implements Serializable{
 		return (nome + " " + sobrenome);
 	}
 	
+	
+	
+	public List<Grupo> getGrupos() {
+		return grupos;
+	}
+
+
+	public void setGrupos(List<Grupo> grupos) {
+		this.grupos = grupos;
+	}
+
+	public List<FilaOrdemServico> getListaFilaOrdemServico() {
+		return listaFilaOrdemServico;
+	}
+
+
+	public void setListaFilaOrdemServico(List<FilaOrdemServico> listaFilaOrdemServico) {
+		this.listaFilaOrdemServico = listaFilaOrdemServico;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

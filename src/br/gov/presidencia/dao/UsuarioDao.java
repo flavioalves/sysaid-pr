@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import br.gov.presidencia.model.FilaOrdemServico;
 import br.gov.presidencia.model.ResumoOrdemServico;
 import br.gov.presidencia.model.Usuario;
 
@@ -27,6 +28,7 @@ public class UsuarioDao extends GenericDao<Usuario> {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Usuario> listAllDisponiveisPorGrupo(String grupoId, Boolean verificaFila){
 
 		List<Usuario> lista = new ArrayList<Usuario>();
@@ -64,6 +66,15 @@ public class UsuarioDao extends GenericDao<Usuario> {
 		for(String obj: retorno){
 			Usuario user = this.find(obj);
 			this.refresh(user);
+			
+			//Nao queria fazer isso mas o SYSDATE do banco nao funciona. Ja pedi para ajustar mas infezlimente nao vao arrumar
+			//No dia que o SYSDATE funciona essa query nao sera mais necessaria
+			Query queryTotal = getEntityManager().createNamedQuery("Fila.findPorUserName", FilaOrdemServico.class);
+			queryTotal.setParameter("dataHoje", dateWithoutTime);
+			queryTotal.setParameter("userName", user);
+			
+			user.setListaFilaOrdemServico(queryTotal.getResultList());
+			
 			//user.getOsHoje();
 			//.user.getOsTotal();
 			lista.add(user);

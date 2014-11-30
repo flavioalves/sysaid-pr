@@ -41,26 +41,27 @@
   
 
 #### Lista de OSs
-  - [A] Colocar filtro por status (filtro persistente)
-  - [A] Verificar dados que não estão sendo apresentados na lista de OS
-  - [A] Mostrar descrição da OS
-  - [A] Apresentar informação da SUB OS
-  - [A] Ordenar lista de OS por data de criação DESC (mais nova vai para o Topo) 
-  - [A] Colocar verificacao na query select para recuperar somente OS nao arquivadas
-  - Ajustar tamanhos de colunas
-  - [A] Ao selecionar 2 OS, estando uma bloqueada por seleção de outro usuário, bloquear o botão de carregar
-  - [A] Ao vincular uma OS a um técnico, disponibilizar a seleção de OSs na lista (liberar os depois que salvar vinculo)
-  - [A] Refazer a logica de bloqueio de seleção de OS por mais de um usuário 
-  - [A] Verificar dados importante para equipe da Central de Serviços
-  - [A] Verificar quais dados não estão sendo apresentados na tabela de lista de OS
-  - [A] Melhor visualização das informações na tabela de OSs em aberto no popup de vinculo
+  - OK -[A] Colocar filtro por status (filtro persistente)
+  - OK - [A] Verificar dados que não estão sendo apresentados na lista de OS
+  - OK - [A] Mostrar descrição da OS
+  ??? - [A] Apresentar informação da SUB OS
+  - OK -[A] Ordenar lista de OS por data de criação DESC (mais nova vai para o Topo) 
+  - OK -[A] Colocar verificacao na query select para recuperar somente OS nao arquivadas
+  - OK - Ajustar tamanhos de colunas
+  - OK -[A] Ao selecionar 2 OS, estando uma bloqueada por seleção de outro usuário, bloquear o botão de carregar
+  - OK -[A] Ao vincular uma OS a um técnico, disponibilizar a seleção de OSs na lista (liberar os depois que salvar vinculo)
+  - OK -[A] Refazer a logica de bloqueio de seleção de OS por mais de um usuário 
+  - OK -[A] Verificar dados importante para equipe da Central de Serviços
+  - OK -[A] Verificar quais dados não estão sendo apresentados na tabela de lista de OS
+  - OK -[A] Melhor visualização das informações na tabela de OSs em aberto no popup de vinculo
+  - OK -[A] Aplicar regra de segurança ao mostrar Lista de OS
   
 
   ######## Modal Seleção de tecnico disponível
   - alterar label -> OS em aberto para "OS ativa";
   OK - Apresentar o total de OSs vinculadas ao técnico, mesmo para grupos não dinâmicos (plus)
   - apresentar modal mais a baixo (margin-top)
-  - hover sobre o número -> hover sobre célula
+  OK - hover sobre o número -> hover sobre célula
 
 #### Programar indisponibilidade
 OK - Só apresentar a tabela após a seleção do grupo
@@ -97,8 +98,8 @@ OK- Permitir alterar a seleção do Responsável pelo Grupo
 OK- Após a seleção do responsável, mostrar na tabela dos Grupos - criar coluna com o nome do responsável pelo grupo
 
 #### Grupo de indisponibilidade ???
-  - Adicionar coluna de responsável pela equipe
-  - Ajustar tamanho da tabela
+OK  - Adicionar coluna de responsável pela equipe
+OK - Ajustar tamanho da tabela
   - Ao selecionar a linha na tabela, apresentar o item selecionado em verde (background-color: #E6F3E5)
   - Editar e excluir - links com botões e ícones
 

@@ -57,7 +57,7 @@ public class RelatorioBean extends AbstractBean {
 	
     @PostConstruct
     public void init() {
-    	this.listaParam = paramControleFacade.listAll();
+    	this.listaParam = paramControleFacade.findPorParam(null, ParametroControle.PARAM_REL);
     	ParametroControle param = recuperaPorParam("intervalo");
     	if(param != null){
     		this.interval =  Integer.valueOf(param.getValor());

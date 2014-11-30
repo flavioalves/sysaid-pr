@@ -1,5 +1,6 @@
 package br.gov.presidencia.facade;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import br.gov.presidencia.dao.GenericDao;
 import br.gov.presidencia.dao.GrupoDao;
 import br.gov.presidencia.model.Grupo;
 import br.gov.presidencia.model.GrupoDinamico;
+import br.gov.presidencia.model.Usuario;
 import br.gov.presidencia.util.MapEntryConverter;
 
 import com.thoughtworks.xstream.XStream;
@@ -37,22 +39,34 @@ public class GrupoFacade extends GenericFacade<Grupo>{
 		return lista;
 	}
 	
-	public Map<String, String> lerPermissaoGrupo(String grupoNome){
+	public List<String> lerPermissaoUsuarioPorGrupo(Usuario user){
 		
-		String result = this.grupoDao.carregaDadosPermissao(grupoNome);
+		List<String> lista = new ArrayList<String>();
+		List<String> retorno = new ArrayList<String>();
 		
-		//InputStream is = new ByteArrayInputStream(grupo.getDadosPermissao());
-
-		System.out.println(result);
+		if(user.getGrupos() == null || (user.getGrupos() != null && user.getGrupos().isEmpty())){
+			return null;
+		}
+		for(Grupo g : user.getGrupos()){
+			lista.add(g.getNome());
+		}
+	
+		
+		List<String> listaPermissao = this.grupoDao.carregaDadosPermissao(lista);
+		
 		
         XStream magicApi = new XStream();
         magicApi.registerConverter(new MapEntryConverter());
         magicApi.alias("userPermissions", Map.class);
 
-        @SuppressWarnings("unchecked")
-		Map<String, String> extractedMap = (Map<String, String>) magicApi.fromXML(result);
-        
-        return extractedMap;
+        for(String xml : listaPermissao){
+        	@SuppressWarnings("unchecked")
+        	Map<String, String> extractedMap = (Map<String, String>) magicApi.fromXML(xml);
+        	String p = extractedMap.get("userPermissionHelpDeskViewType");
+        	retorno.add(p);
+        }
+
+        return retorno;
 	}
 	
 	
