@@ -41,7 +41,8 @@ public class GrupoDao extends GenericDao<Grupo> {
 		
 		List<Object> objs = query.getResultList();
 		for(Object obj : objs){
-			resultado.add(new String((byte[])obj));
+			if(obj != null)
+				resultado.add(new String((byte[])obj));
 		}
 		
 		return resultado;

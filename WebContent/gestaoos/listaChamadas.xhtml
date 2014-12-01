@@ -31,6 +31,9 @@
 
 			 <p:ajax event="rowSelectCheckbox" listener="#{vincularTecnicoBean.onRowSelect}" update=":form:botaoCarregarPopUp" />
              <p:ajax event="rowUnselectCheckbox" listener="#{vincularTecnicoBean.onRowUnselect}" update=":form:botaoCarregarPopUp" />
+             
+             <p:ajax event="rowSelect" listener="#{vincularTecnicoBean.onRowSelect}" update=":form:botaoCarregarPopUp" />
+        	 <p:ajax event="rowUnselect" listener="#{vincularTecnicoBean.onRowUnselect}" update=":form:botaoCarregarPopUp" />
         
 					<p:column selectionMode="multiple" width="3%"
 						style="text-align:center"  />
@@ -41,7 +44,7 @@
 									style="float: left;" /></b>
 						</f:facet>
 						<!-- Ajustar Link Para Producao e Homologacao -->
-						<h:outputLink value="http://localhost:8081/index.jsp#/SREdit.jsp" target="_blank">#{os.id}
+						<h:outputLink value="http://centraldeservicos2.presidencia.gov.br/index.jsp#/SREdit.jsp" target="_blank">#{os.id}
 							<f:param name="id" value="#{os.id}" />
 							<f:param name="fromId" value="IncidentsList" />
 						</h:outputLink>
@@ -146,7 +149,7 @@
     </div>
     
     <p:dialog header="#{msg['menu.vinculo.popup.titulo']}" widgetVar="listaTecnicoPopup" modal="true" 
-    showEffect="fade" hideEffect="fade" resizable="false" position="top" width="750" height="600" closable="false">
+    showEffect="fade" hideEffect="fade" resizable="false" position="top" width="750" height="500" closable="false">
         <p:outputPanel id="listaTecnicoPanel" >
         
 	    
@@ -252,7 +255,7 @@
 								<p:dataTable value="#{tec.osTotalAberta}" var="resumoOS"
 									style="width:300px">
 									<f:facet name="header">
-				          OS em Aberto
+				          OS Ativas
 				        </f:facet>
 
 									<p:column>
