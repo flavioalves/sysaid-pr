@@ -152,7 +152,7 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 
 					while (lista.hasNext()) {
 						OrdemServico os = lista.next(); // must be called before you can call i.remove()
-						if(ControleSelecaoSingleton.getInstance().isOSSelecionada(os.getId().toString()) ){
+						if(ControleSelecaoSingleton.getInstance().isOSSelecionada(os.getId().toString(),getUsuarioLogadoCookie()) ){
 							lista.remove();
 						}
 					}
@@ -289,7 +289,7 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 	}
 	
 	public Boolean isOSSelecionada(String numeroOS){	
-		return ControleSelecaoSingleton.getInstance().isOSSelecionada(numeroOS);
+		return ControleSelecaoSingleton.getInstance().isOSSelecionada(numeroOS,getUsuarioLogadoCookie());
 	
 	}
 	
@@ -414,7 +414,7 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 	}
 
 	public List<String> getFiltros() {
-		if(filtros == null || filtros.isEmpty()){
+		if(filtros == null ){
 			filtros = new ArrayList<String>();
 			filtros.add("1");
 		}

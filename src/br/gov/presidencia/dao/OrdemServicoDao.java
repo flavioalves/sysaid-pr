@@ -250,7 +250,9 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 		 
 		if(sortField == null){sortField = "insert_time"; sortOrder = "DESC";}
 		
-			String sql = "SELECT r.id,"+
+			StringBuilder sql = new StringBuilder();
+		
+			 sql.append("SELECT r.id,"+
 							"l.value_caption location, "+
 							"u.calculated_user_name request_user, "+
 							"s.value_caption status, "+
@@ -273,15 +275,24 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 							"left join cust_values urg on r.urgency = urg.value_key  and urg.list_name = 'urgency' "+
 							"left join sysaid_user u on u.user_name = r.request_user "+
 							"left join sysaid_user ur on ur.user_name = r.responsibility "
-							+ " where r.sr_type = 1 "+ sqlSeguranca+" and r.ARCHIVE != 1 and r.status in :status  ORDER by  "+sortField+" "+sortOrder;
+							+ " where r.sr_type = 1 "+ sqlSeguranca+" and r.ARCHIVE != 1 ");
+							
+			 		if(status != null && !status.isEmpty()){
+			 			sql.append(" and r.status in :status ");
+			 		}
+			 				sql.append("  ORDER by  ");
+			 				sql.append(sortField);
+			 				sql.append(" ");
+			 				sql.append(sortOrder);
 			
 			
 
-			Query query = getEntityManager().createNativeQuery(sql);
+			Query query = getEntityManager().createNativeQuery(sql.toString());
 			
 
-			
+			if(status != null && !status.isEmpty()){
 			query.setParameter("status", status);
+			}
 			//query.setParameter("sortField", "r.id");
 			//query.setParameter("sortOrder", "DESC");
 			query.setFirstResult(first);

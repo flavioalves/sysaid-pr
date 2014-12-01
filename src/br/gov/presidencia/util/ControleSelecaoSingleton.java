@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import br.gov.presidencia.model.Usuario;
+
 
 public class ControleSelecaoSingleton {
 	
@@ -69,18 +71,20 @@ public class ControleSelecaoSingleton {
 		}
 	}
 	
-	public Boolean isOSSelecionada(String numeroOS){
+	public Boolean isOSSelecionada(String numeroOS, Usuario user){
 		final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
 		
 		List<SelecaoOSControle> lista = this.getControle();
 		for(SelecaoOSControle co : lista){
-			if(co.getListaOS().contains(numeroOS) ){
-				long t=co.getInicio().getTime();
-				Date afterAddingOneMin=new Date(t + (2 * ONE_MINUTE_IN_MILLIS));
-				if(afterAddingOneMin.after(new Date())){
-					return true;
-				}else{
-					co.getListaOS().remove(numeroOS);
+			if(!co.getUserName().equalsIgnoreCase(user.getUserName())){
+				if(co.getListaOS().contains(numeroOS) ){
+					long t=co.getInicio().getTime();
+					Date afterAddingOneMin=new Date(t + (1 * ONE_MINUTE_IN_MILLIS));
+					if(afterAddingOneMin.after(new Date())){
+						return true;
+					}else{
+						co.getListaOS().remove(numeroOS);
+					}
 				}
 			}
 		}
