@@ -73,7 +73,8 @@ ok - Verificar total de OS no período
 
 
 #### Geral
-- Melhor marca na página atual da paginação
+	- Melhor marca na página atual da paginação
+	- Ao selecionar a linha na tabela, apresentar o item selecionado em verde (background-color: #E6F3E5)
 
 #### Grupo dinamico
 OK- Adicionar botao par abrir popup para seleção de responsável pelo grupo
@@ -87,7 +88,6 @@ OK- Após a seleção do responsável, mostrar na tabela dos Grupos - criar colu
 #### Grupo de indisponibilidade ???
   - Adicionar coluna de responsável pela equipe
   - Ajustar tamanho da tabela
-  - Ao selecionar a linha na tabela, apresentar o item selecionado em verde (background-color: #E6F3E5)
   - Editar e excluir - links com botões e ícones
 
 #### Feedbacks do cliente
