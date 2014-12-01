@@ -1,7 +1,10 @@
 package br.gov.presidencia.control.bean;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +21,14 @@ import org.primefaces.model.SortOrder;
 
 import br.gov.presidencia.facade.GrupoFacade;
 import br.gov.presidencia.facade.OrdemServicoFacade;
+import br.gov.presidencia.facade.ParametroControleFacade;
 import br.gov.presidencia.facade.UsuarioFacade;
+import br.gov.presidencia.model.CustValue;
 import br.gov.presidencia.model.Grupo;
 import br.gov.presidencia.model.OrdemServico;
+import br.gov.presidencia.model.ParametroControle;
 import br.gov.presidencia.model.Usuario;
+import br.gov.presidencia.util.ControleSelecaoSingleton;
 
 /**
  * @author Alvaro
@@ -40,11 +47,18 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 	@Inject
 	private UsuarioFacade usuarioFacade;
 	
+	@Inject
+	private ParametroControleFacade paramControleFacade;
+	
 	private Grupo grupo;
+	
+	private List<String> permissoes;
+	
+	private List<String> filtros;
 	
 	private List<OrdemServico> listaOS;
 	
-	private List<Usuario> listaUsuarios;
+	private List<Usuario> listaTecnicos;
 	
 	private List<SelectItem> listaGrupoSelect;
 	
@@ -53,6 +67,8 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 	private Usuario tecnicoSelecionado;
 	
 	private Boolean bloqueaBotao;
+	
+	private int tipoSeguranca = 0;
 	
 	
 /*	public String selecionarTecnico(){
@@ -68,27 +84,87 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
     
     @PostConstruct
 	public void init(){
-		
+
+    	//Bloqueia o botao Carregar
+    	this.setBloqueaBotao(true);
+    	
+    	// Lista com filtros por Status
+    	List<ParametroControle> listaParam = null;
+    	
+    	
+    	// Verifica se consegui carregar o usuario 
+    	if(getUsuarioLogadoCookie() != null){
+    		//Ler permissoes do Usuario Logado Por Grupo
+    		permissoes = getGrupoFacade().lerPermissaoUsuarioPorGrupo(getUsuarioLogadoCookie());
+    		if(permissoes != null){
+	    		for(String per : permissoes){
+	    			if(per.equalsIgnoreCase("All")){
+	    				tipoSeguranca = Usuario.All;
+	    				break;
+	    			}else if(per.equalsIgnoreCase("AssigendGroupAndAssignedOnly")){
+	    				tipoSeguranca = Usuario.AssigendGroupAndAssignedOnly;
+	    			}else if(per.equalsIgnoreCase("AssignedOnly") && tipoSeguranca == 0){
+	    				tipoSeguranca = Usuario.AssignedOnly;
+	    			}
+	    		}
+    		}
+    		
+    		
+    		//Ler filtros por status
+    		listaParam = getParamControleFacade().findPorParam(getUsuarioLogadoCookie().getUserName()+"-status",  ParametroControle.PARAM_STATUS);
+    		filtros = new ArrayList<String>();
+    		if(listaParam != null){
+	    		for(ParametroControle pr : listaParam){
+	    			filtros.add(pr.getValor());
+	    		}
+    		}else{
+    			filtros.add("1");
+    		}
+    	}
+    	
+		//Prepara list de OS no modelo Lazy Load
 		this.modelList = new LazyDataModel<OrdemServico>() {
-	        /**
-			 * 
-			 */
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
 	        public List<OrdemServico> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) {
-				String sort = "ASC";
-				if(sortOrder != null && SortOrder.DESCENDING.name().equalsIgnoreCase(sortOrder.name())){
-					sort = "DESC";
+				String sort = "DESC";
+				List<OrdemServico> listaRetorno = null;
+				if(sortOrder != null && SortOrder.ASCENDING.name().equalsIgnoreCase(sortOrder.name())){
+					sort = "ASC";
 				}
 				
 				
-				return getOrdemServicoFacade().listAll(first,pageSize,sortField,sort);
+				try {
+					//Estou pasando os dados da segunranca na busca por OS
+					listaRetorno =  getOrdemServicoFacade().listAll(first,pageSize,sortField,sort,getFiltrosInt(), tipoSeguranca,getUsuarioLogadoCookie());
+					} catch (SQLException e) {
+						displayErrorMessageToUser("Erro ao recuperar a descrição da OS");
+						e.printStackTrace();
+					} catch (IOException e) {
+						displayErrorMessageToUser("Erro ao recuperar a descrição da OS");
+						e.printStackTrace();
+					}
+				
+				if(listaRetorno != null ){
+				Iterator<OrdemServico> lista =	listaRetorno.iterator();
+
+					while (lista.hasNext()) {
+						OrdemServico os = lista.next(); // must be called before you can call i.remove()
+						if(ControleSelecaoSingleton.getInstance().isOSSelecionada(os.getId().toString()) ){
+							lista.remove();
+						}
+					}
+				
+				}
+				return listaRetorno;
 	        	} 
 	        };
 
+	        //Nao estou utilizando essa informacao
 	        int totalRowCount = 100; //logical row count based on a count query
-    		 this.modelList.setRowCount(totalRowCount);
+	        this.modelList.setRowCount(totalRowCount);
 	}
 
 	
@@ -107,25 +183,58 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 			if(this.grupo != null){
 				if(this.grupo.getDinamico() != null && this.grupo.getDinamico().getAtivo() != null && this.grupo.getDinamico().getAtivo()){
 					//Verifica o fila de OS
-					this.listaUsuarios = this.usuarioFacade.listAllDisponiveisPorGrupo(grupoId, true);
-					//Lista estï¿½ï¿½ cheia limpa a Fila set Ativo = False
-					if(this.listaUsuarios == null || this.listaUsuarios.isEmpty()){
+					this.listaTecnicos = this.usuarioFacade.listAllDisponiveisPorGrupo(grupoId, true);
+					//Lista estah cheia limpa a Fila set Ativo = False
+					if(this.listaTecnicos == null || this.listaTecnicos.isEmpty()){
 						this.ordemServicoFacade.limpaFilaPorGrupoHoje(grupoId);
 					}
 					//Verifica fila novamente
-					this.listaUsuarios = this.usuarioFacade.listAllDisponiveisPorGrupo(grupoId, true);
+					this.listaTecnicos = this.usuarioFacade.listAllDisponiveisPorGrupo(grupoId, true);
 				}else{
 					//this.listaUsuarios = this.grupo.getTecnicos();
-					this.listaUsuarios = this.usuarioFacade.listAllDisponiveisPorGrupo(grupoId, false);
+					this.listaTecnicos = this.usuarioFacade.listAllDisponiveisPorGrupo(grupoId, false);
 				}
 			}
 			
 		}
 	}
 	
+	public void onFiltroChange(){
+		
+		if (getUsuarioLogadoCookie() != null) {
+			
+			String id = getUsuarioLogadoCookie().getUserName() + "-status";
+			
+			try {
+				this.paramControleFacade.limpaFiltro(id);
+			} catch (Exception e1) {
+				this.displayErrorMessageToUser("Erro ao configurar filtro. " + e1.getMessage());
+				e1.printStackTrace();
+				return;
+			}
+
+			for (String valor : getFiltros()) {
+
+				ParametroControle param = new ParametroControle();
+				param.setParam(id);
+				param.setValor(valor);
+				param.setTipo(1);
+				try {
+					this.paramControleFacade.save(param);
+				} catch (Exception e) {
+					this.displayErrorMessageToUser("Erro ao configurar filtro. " + e.getMessage());
+					return;
+				}
+			}
+			this.displayInfoMessageToUser("Filtro salvo.");
+		}
+
+	}
+	
 	public String salvarTecnico(){
 		try {
 			this.ordemServicoFacade.salvarOSComRegraDeNegocio(this.grupo, this.getListaOS(), this.getTecnicoSelecionado(), super.getUsuarioLogadoCookie());
+			this.removeOSSelecionada(super.getUsuarioLogadoCookie().getUserName());
 			super.displayInfoMessageToUser("Salvo com sucesso");
 		} catch (Exception e) {
 			super.displayErrorMessageToUser("Erro ao Salvar os dados "+e.getMessage());
@@ -139,36 +248,56 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 	
     public void resetGrupoTecnicos() {
     	this.grupoId = null;
-    	this.listaUsuarios = null;
+    	this.listaTecnicos = null;
+    	
+    	if(getUsuarioLogadoCookie() != null){
+    		saveOSSelecionada(getUsuarioLogadoCookie().getUserName(), getListaOS());
+    	}
 
     }
     
-    public void onRowSelect(SelectEvent event) {
-    	OrdemServico os = (OrdemServico)event.getObject();
-    if( os != null && super.isObjectInAppContext(os.getId().toString())){
-    		Usuario user = (Usuario)super.getObjectInAppContext(os.getId().toString());
-    		this.displayErrorMessageToUser("OS - "+os.getId() +" marcada pelo usuário: "+user.getUserNameCalculado());
+    public void onRowSelect(SelectEvent event) {  
+    	//OrdemServico os = (OrdemServico)event.getObject();
+    	if(getListaOS() == null || getListaOS().isEmpty()){
     		this.setBloqueaBotao(true);
     	}else{
-    		super.saveObjectInAppContext(os.getId().toString(), getUsuarioLogadoCookie());
-    		this.displayInfoMessageToUser("OS - "+os.getId() +" selecionada");
     		this.setBloqueaBotao(false);
     	}
-
     }
- 
-    public void onRowUnselect(UnselectEvent event) {
-    	OrdemServico os = (OrdemServico)event.getObject();
-    	if( os != null && super.isObjectInAppContext(os.getId().toString())){
-    		Usuario user = (Usuario)super.getObjectInAppContext(os.getId().toString());
-    		if(user != null && user.getUserName().equals(getUsuarioLogadoCookie().getUserName())){
-    			super.removeObjectInAppContext(os.getId().toString());
-    		}else{
-    			this.displayErrorMessageToUser("OS - "+os.getId() +" marcada pelo usuário: "+user.getUserNameCalculado());
-    		}
-    		
+    
+    public void onRowUnselect(UnselectEvent  event) {
+    	//OrdemServico os = (OrdemServico)event.getObject();
+    	if(getListaOS() == null || getListaOS().isEmpty()){
+    		this.setBloqueaBotao(true);
+    	}else{
+    		this.setBloqueaBotao(false);
     	}
     }
+    
+    public void liberarOSSelecionadas(){
+    	if(getUsuarioLogadoCookie() != null){
+    		removeOSSelecionada(getUsuarioLogadoCookie().getUserName());	
+    	}
+    	
+    }
+    
+	public void saveOSSelecionada(String userName, List<OrdemServico> listaNumeroOS){
+		for(OrdemServico numeroOS : listaNumeroOS){
+			 ControleSelecaoSingleton.getInstance().saveOSSelecionada(userName, numeroOS.getId().toString());
+		}
+		ControleSelecaoSingleton.getInstance();
+	}
+	
+	public Boolean isOSSelecionada(String numeroOS){	
+		return ControleSelecaoSingleton.getInstance().isOSSelecionada(numeroOS);
+	
+	}
+	
+	
+	public void removeOSSelecionada(String userName){
+		ControleSelecaoSingleton.getInstance().removeOSSelecionada(userName);
+		ControleSelecaoSingleton.getInstance();
+	}
 	
 
 	public GrupoFacade getGrupoFacade() {
@@ -205,13 +334,24 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 
 
 	public List<OrdemServico> getListaOS() {
-		return listaOS;
+		return  this.listaOS;
 	}
 
 	public void setListaOS(List<OrdemServico> listaOS) {
 		this.listaOS = listaOS;
 	}
 
+	
+	public List<SelectItem> getListaStatus() {
+		List<SelectItem> listaStatus = new ArrayList<SelectItem>();
+		
+		List<CustValue> lista = this.ordemServicoFacade.listaCustValuesporTipo("status");
+		for(CustValue c :lista){
+			listaStatus.add(new SelectItem(c.getValueKey(), c.getValueCaption()));
+		}
+
+		return listaStatus;
+	}
 
 	public List<SelectItem> getListaGrupoSelect() {
 		if(listaGrupoSelect == null){
@@ -222,6 +362,15 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 			}
 		}
 		return listaGrupoSelect;
+	}
+	
+	public List<String> getListaGrupoLista() {
+		List<String> listaGrupo = new ArrayList<String>();
+		List<Grupo> lista = this.getGrupoFacade().listAll();
+		for(Grupo g :lista){
+			listaGrupo.add(g.getNome());
+		}
+		return listaGrupo;
 	}
 
 	public void setListaGrupoSelect(List<SelectItem> listaGrupoSelect) {
@@ -239,12 +388,12 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 
 
 
-	public List<Usuario> getListaUsuarios() {
-		return listaUsuarios;
+	public List<Usuario> getListaTecnicos() {
+		return listaTecnicos;
 	}
 
-	public void setListaUsuarios(List<Usuario> listaUsuarios) {
-		this.listaUsuarios = listaUsuarios;
+	public void setListaUsuarios(List<Usuario> listaTecnicos) {
+		this.listaTecnicos = listaTecnicos;
 	}
 
 
@@ -262,6 +411,45 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 
 	public void setBloqueaBotao(Boolean bloqueaBotao) {
 		this.bloqueaBotao = bloqueaBotao;
+	}
+
+	public List<String> getFiltros() {
+		if(filtros == null || filtros.isEmpty()){
+			filtros = new ArrayList<String>();
+			filtros.add("1");
+		}
+		return filtros;
+	}
+	
+	public List<Integer> getFiltrosInt(){
+		List<Integer> lista = new ArrayList<Integer>();
+		for(String v : getFiltros()){
+			lista.add(new Integer(v));
+		}
+		return lista;
+	}
+
+	public void setFiltros(List<String> filtros) {
+		this.filtros = filtros;
+	}
+
+
+
+
+	public ParametroControleFacade getParamControleFacade() {
+		return paramControleFacade;
+	}
+
+	public void setParamControleFacade(ParametroControleFacade paramControleFacade) {
+		this.paramControleFacade = paramControleFacade;
+	}
+
+	public List<String> getPermissoes() {
+		return permissoes;
+	}
+
+	public void setPermissoes(List<String> permissoes) {
+		this.permissoes = permissoes;
 	}
 
 

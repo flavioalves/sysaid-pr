@@ -1,6 +1,10 @@
 package br.gov.presidencia.dao;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.sql.Clob;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -14,6 +18,9 @@ import javax.inject.Named;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.io.IOUtils;
+
+import br.gov.presidencia.model.CustValue;
 import br.gov.presidencia.model.FilaOrdemServico;
 import br.gov.presidencia.model.OrdemServico;
 import br.gov.presidencia.model.ResumoOrdemServico;
@@ -205,9 +212,44 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 	}
 	
 	
-	public List<OrdemServico> listAll(int first, int pageSize, String sortField,String sortOrder) {
+	public List<CustValue> listaCustValuesporTipo(String tipo){
+		
+		List<CustValue> lista = new ArrayList<CustValue>();
+		String sql = "SELECT c.LIST_NAME,c.VALUE_CAPTION, c.VALUE_KEY  from cust_values c WHERE c.LIST_NAME = :tipo ORDER BY c.VALUE_CAPTION";
+		Query query = getEntityManager().createNativeQuery(sql);
+		query.setParameter("tipo", tipo);
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> retorno = query.getResultList();
+		for(Object[] obj : retorno) {
+			CustValue c = new CustValue();
+			c.setListName((String) obj[0]);
+			c.setValueCaption((String) obj[1]);
+			BigDecimal big = (BigDecimal)obj[2];
+			c.setValueKey(big.intValue());
+			lista.add(c);
+		}
+		
+		return lista;
+		
+	}
+	
+	public List<OrdemServico> listAll(int first, int pageSize, String sortField,String sortOrder, List<Integer> status, int tipoSeguranca, Usuario user) throws SQLException, IOException {
 		 List<OrdemServico> lista = new ArrayList<OrdemServico>();
-			
+		 
+		 String sqlSeguranca = "";
+		 
+		 if(tipoSeguranca == Usuario.All){
+			// sqlSeguranca = "";
+			}else if(tipoSeguranca == Usuario.AssignedOnly){
+				sqlSeguranca = " and r.request_user ="+user.getUserName();
+			}
+			else if(tipoSeguranca == Usuario.AssigendGroupAndAssignedOnly){
+				sqlSeguranca = sqlSeguranca+ " and r.assigned_group in (SELECT grp.GROUP_NAME FROM USER2GROUP grp WHERE grp.USER_NAME ='"+user.getUserName()+"' )";
+			}
+		 
+		if(sortField == null){sortField = "insert_time"; sortOrder = "DESC";}
+		
 			String sql = "SELECT r.id,"+
 							"l.value_caption location, "+
 							"u.calculated_user_name request_user, "+
@@ -219,23 +261,29 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 							"problem_type, "+
 							"r.contact, "+
 							"r.version, "+
-							"assigned_group FROM service_req r "+
+							"r.assigned_group, " +
+							"r.PROBLEM_SUB_TYPE, "+
+							"r.TITLE, "+
+							"r.DESCRIPTION "+
+							
+							" FROM service_req r "+
 							"left join cust_values l on r.location = l.value_key  and l.list_name = 'location' "+
 							"left join cust_values s on r.status = s.value_key  and s.list_name = 'status' "+
 							"left join cust_values p on r.priority = p.value_key  and p.list_name = 'priority' "+
-							"left join cust_values urg on r.location = urg.value_key  and urg.list_name = 'urgency' "+
+							"left join cust_values urg on r.urgency = urg.value_key  and urg.list_name = 'urgency' "+
 							"left join sysaid_user u on u.user_name = r.request_user "+
 							"left join sysaid_user ur on ur.user_name = r.responsibility "
-							+ " where r.sr_type = 1 ORDER by :sortField DESC";
+							+ " where r.sr_type = 1 "+ sqlSeguranca+" and r.ARCHIVE != 1 and r.status in :status  ORDER by  "+sortField+" "+sortOrder;
 			
 			
 
 			Query query = getEntityManager().createNativeQuery(sql);
 			
-			if(sortField == null){sortField = "id";}
+
 			
-			query.setParameter("sortField", sortField);
-		//	query.setParameter("sortOrder", sortOrder);
+			query.setParameter("status", status);
+			//query.setParameter("sortField", "r.id");
+			//query.setParameter("sortOrder", "DESC");
 			query.setFirstResult(first);
 			query.setMaxResults(pageSize);
 			@SuppressWarnings("unchecked")
@@ -256,6 +304,13 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 			os.setContato((String)obj[9]); 
 			os.setVersion((BigDecimal)obj[10]); 
 			os.setGrupo((String)obj[11]);
+			os.setSubCategoria((String)obj[12]);
+			os.setTitulo((String)obj[13]);
+			Clob clobObject = (Clob)obj[14];
+			
+			String clobAsString = convertClobToString(clobObject);
+			
+			os.setDescricao(clobAsString);
 			
 			
 			lista.add(os);
@@ -264,6 +319,14 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 		return lista;
 		
 	}
+
+	private String convertClobToString(Clob clobObject) throws SQLException, IOException {
+		InputStream in = clobObject.getAsciiStream();
+		StringWriter w = new StringWriter();
+		IOUtils.copy(in, w);
+		String clobAsString = w.toString();
+		return clobAsString;
+	}
 	
 
 	/**
@@ -271,10 +334,18 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 	 */
 	private static final long serialVersionUID = 535924374653980099L;
 
-
-
-	public void insertLog(BigDecimal id, String userName) {
-		// TODO Auto-generated method stub
+	public void insertLog(BigDecimal id, String tecnico, String username) {
+		String texto = "O incidente # "+ id.toString() +" foi atribuído a "+ tecnico;
+		String sql = "Insert into SERVICE_REQ_LOG (LOG_ID,ACCOUNT_ID,SERVICE_REQ_ID,LOG_TIME,LOG_TYPE,LOG_DESCRIPTION,EXT_REFERENCE,USER_NAME) "
+				+ "SELECT (SELECT MAX(LOG_ID) FROM SERVICE_REQ_LOG)+1,ACCOUNT_ID,SERVICE_REQ_ID,:LOGTIME,'Incident changed','"+texto+"',EXT_REFERENCE+1,:USERNAME "
+				+ " FROM SERVICE_REQ_LOG WHERE SERVICE_REQ_ID = :ID "
+				+ " AND LOG_ID = (SELECT MAX(LOG_ID) FROM SERVICE_REQ_LOG WHERE SERVICE_REQ_ID = :ID)";
+		Query query = getEntityManager().createNativeQuery(sql);
+		
+		query.setParameter("ID", id);
+		query.setParameter("LOGTIME", new Date());
+		query.setParameter("USERNAME", username);
+		query.executeUpdate();
 		
 	}
 

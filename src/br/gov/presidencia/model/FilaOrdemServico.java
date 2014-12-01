@@ -26,6 +26,8 @@ import org.hibernate.annotations.Type;
                 query="SELECT f FROM FilaOrdemServico f where f.ativo = TRUE "),
     @NamedQuery(name="Fila.findByOS",
                 query="SELECT f FROM FilaOrdemServico f where f.resumoOS = :osId "),
+    @NamedQuery(name="Fila.findPorUserName",
+                query="SELECT f FROM FilaOrdemServico f  WHERE  f.data >= :dataHoje and f.tecnico = :userName "),
 })
 public class FilaOrdemServico extends GenericModel {
 	

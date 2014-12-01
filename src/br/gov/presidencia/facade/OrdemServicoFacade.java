@@ -1,5 +1,7 @@
 package br.gov.presidencia.facade;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import javax.inject.Named;
 
 import br.gov.presidencia.dao.GenericDao;
 import br.gov.presidencia.dao.OrdemServicoDao;
+import br.gov.presidencia.model.CustValue;
 import br.gov.presidencia.model.FilaOrdemServico;
 import br.gov.presidencia.model.Grupo;
 import br.gov.presidencia.model.OrdemServico;
@@ -72,7 +75,7 @@ public class OrdemServicoFacade extends GenericFacade<OrdemServico>{
 				//Insere Historio
 				ordemServicoDao.insertHistorico(os.getId());
 				//Cria Log
-				ordemServicoDao.insertLog(os.getId(), user.getUserName());
+				ordemServicoDao.insertLog(os.getId(),tecnico.getUserName(), user.getUserName());
 				//Atualiza OS
 				ordemServicoDao.updateQueryOS(os, tecnico, user);
 			}
@@ -88,13 +91,17 @@ public class OrdemServicoFacade extends GenericFacade<OrdemServico>{
 		return this.getOrdemServicoDao().listAll();
 	}
 	
+	public List<CustValue> listaCustValuesporTipo(String tipo){
+		return this.getOrdemServicoDao().listaCustValuesporTipo(tipo);
+	}
+	
 
 	public OrdemServicoDao getOrdemServicoDao() {
 		return ordemServicoDao;
 	}
 
-	public List<OrdemServico> listAll(int first, int pageSize, String sortField, String sortOrder) {
-		return  this.ordemServicoDao.listAll(first,pageSize,sortField,sortOrder);
+	public List<OrdemServico> listAll(int first, int pageSize, String sortField, String sortOrder, List<Integer> filtrosStatus, int tipoSeguranca, Usuario user) throws SQLException, IOException {
+		return  this.ordemServicoDao.listAll(first,pageSize,sortField,sortOrder,filtrosStatus, tipoSeguranca, user);
 		
 	}
 
