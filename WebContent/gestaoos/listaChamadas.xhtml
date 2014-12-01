@@ -6,8 +6,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
-	
-	
+
+
 	<ui:define name="body">
 
 		<h3>
@@ -17,294 +17,318 @@
 		<br />
 
 		<h:form id="form">
-		<div style="width: 100%">
-		
-        
-				<p:dataTable id="listaOS" value="#{vincularTecnicoBean.modelList}" lazy="true"
-					selection="#{vincularTecnicoBean.listaOS}" var="os" widgetVar="listaOS" 
-					rowKey="#{os.id}" paginator="true" rows="25">
+
+			<p:dataTable id="listaOS" value="#{vincularTecnicoBean.modelList}"
+				styleClass="os-table" lazy="true"
+				selection="#{vincularTecnicoBean.listaOS}" var="os"
+				resizableColumns="true" scrollable="true" scrollWidth="1400"
+				widgetVar="listaOS" rowKey="#{os.id}" paginator="true" rows="25">
+
 				<f:facet name="header">
 					<h:outputText value="#{msg['menu.vinculo.titulo']}" />
-			        <p:commandButton id="toggler" type="button" value="Colunas" style="float:right" icon="ui-icon-calculator" />
-			        <p:columnToggler datasource="listaOS" trigger="toggler" />
-			    </f:facet>
+					<p:commandButton id="toggler" type="button" value="Colunas"
+						style="float:right" icon="ui-icon-calculator" />
+					<p:columnToggler datasource="listaOS" trigger="toggler" />
+				</f:facet>
 
-			 <p:ajax event="rowSelectCheckbox" listener="#{vincularTecnicoBean.onRowSelect}" update=":form:botaoCarregarPopUp" />
-             <p:ajax event="rowUnselectCheckbox" listener="#{vincularTecnicoBean.onRowUnselect}" update=":form:botaoCarregarPopUp" />
-             
-             <p:ajax event="rowSelect" listener="#{vincularTecnicoBean.onRowSelect}" update=":form:botaoCarregarPopUp" />
-        	 <p:ajax event="rowUnselect" listener="#{vincularTecnicoBean.onRowUnselect}" update=":form:botaoCarregarPopUp" />
-        
-					<p:column selectionMode="multiple" width="3%"
-						style="text-align:center"  />
+				<p:ajax event="rowSelectCheckbox"
+					listener="#{vincularTecnicoBean.onRowSelect}"
+					update=":form:botaoCarregarPopUp" />
+				<p:ajax event="rowUnselectCheckbox"
+					listener="#{vincularTecnicoBean.onRowUnselect}"
+					update=":form:botaoCarregarPopUp" />
 
-					<p:column sortBy="#{os.id}" width="5%">
-						<f:facet name="header">
-							<b><h:outputText value="N"
-									style="float: left;" /></b>
-						</f:facet>
-						<!-- Ajustar Link Para Producao e Homologacao -->
-						<h:outputLink value="http://centraldeservicos2.presidencia.gov.br/index.jsp#/SREdit.jsp" target="_blank">#{os.id}
+				<p:ajax event="rowSelect"
+					listener="#{vincularTecnicoBean.onRowSelect}"
+					update=":form:botaoCarregarPopUp" />
+				<p:ajax event="rowUnselect"
+					listener="#{vincularTecnicoBean.onRowUnselect}"
+					update=":form:botaoCarregarPopUp" />
+
+				<p:column selectionMode="multiple" width="3%"
+					style="text-align:center" />
+
+				<p:column sortBy="#{os.id}" width="5%">
+					<f:facet name="header">
+						<b><h:outputText value="N" /></b>
+					</f:facet>
+					<!-- Ajustar Link Para Producao e Homologacao -->
+					<h:outputLink
+						value="${request.requestURL.substring(0, request.requestURL.lastIndexOf(':'))}/index.jsp#/SREdit.jsp"
+						target="_blank">#{os.id}
 							<f:param name="id" value="#{os.id}" />
-							<f:param name="fromId" value="IncidentsList" />
-						</h:outputLink>
-		            </p:column>
-		            
-		            <p:column sortBy="#{os.categoria}" field="problem_type" width="10%">
-						<f:facet name="header">
-							<b><h:outputText value="Categoria"
-									style="float: left;" /></b>
-						</f:facet>
-		                #{os.categoria}
-		            </p:column>
-		            
-		             <p:column filterBy="#{os.status}" headerText="Status"  width="10%">
-			            <f:facet name="filter">
-			                <p:selectCheckboxMenu label="Status" value="#{vincularTecnicoBean.filtros}"   panelStyle="width:205px" scrollHeight="150" >
-			                    <p:ajax listener="#{vincularTecnicoBean.onFiltroChange}" update="listaOS" />
-			                    <f:selectItems  value="#{vincularTecnicoBean.listaStatus}" />
-			                </p:selectCheckboxMenu>
-			            </f:facet>
-			            <h:outputText value=" #{os.status}" />
-			        </p:column>
-			        <p:column width="20%">
-						<f:facet name="header">
-							<b><h:outputText value="Titulo"
-									style="float: left;" /></b>
-						</f:facet>
-		                #{os.titulo}
-		            </p:column>
-		            
-					<p:column width="8%">
-						<f:facet name="header">
-							<b><h:outputText value="End. Atendimento"
-									style="float: left;" /></b>
-						</f:facet>
-		                #{os.enderecoAtendimento}
-		            </p:column>
-		            
-					<p:column width="8%">
-						<f:facet name="header">
-							<b><h:outputText value="Solicitante"
-									style="float: left;" /></b>
-						</f:facet>
-		                #{os.solicitante}
-		            </p:column>
-		            	 
-					<p:column  width="9%">
-						<f:facet name="header">
-							<b><h:outputText value="Responsável"
-									style="float: left;" /></b>
-						</f:facet>
-		                #{os.responsavel}
-		            </p:column>	
-		            
-					<p:column width="7%">
-						<f:facet name="header">
-							<b><h:outputText value="Data/Hora Solicitação"
-									style="float: left;" /></b>
-						</f:facet>
-		                
-		                <h:outputText value="#{os.dataAbertura}">
-		                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" type="both" />
-		                </h:outputText>
-		            </p:column>	
-		            
-					<p:column width="7%">
-						<f:facet name="header">
-							<b><h:outputText value="Prioridade"
-									style="float: left;" /></b>
-						</f:facet>
-		                #{os.prioridade}
-		            </p:column>	
-		            <p:column width="8%">
-						<f:facet name="header">
-							<b><h:outputText value="Classificão"
-									style="float: left;" /></b>
-						</f:facet>
-		                #{os.classificacao}
-		            </p:column>			            
-		            
-		            <p:column width="8%">
-						<f:facet name="header">
-							<b><h:outputText value="Contato"
-									style="float: left;" /></b>
-						</f:facet>
-		                #{os.contato}
-		            </p:column>	
-					
-			<p:column  headerText="Grupo Atendimento" width="6%">
-            <h:outputText value=" #{os.grupo}" />
-        </p:column> 		            
-		            
+						<f:param name="fromId" value="IncidentsList" />
+					</h:outputLink>
+				</p:column>
 
-				</p:dataTable>
-				<br/>
-			<p:commandButton value="Carregar" icon="ui-icon-disk" id="botaoCarregarPopUp"
-			disabled="#{vincularTecnicoBean.bloqueaBotao}"
-			action="#{vincularTecnicoBean.resetGrupoTecnicos}" 
-			update=":form:listaTecnicoPanel" 
-			oncomplete="PF('listaTecnicoPopup').show()"
-			style="float:right; width:100px" />
-    </div>
-    
-    <p:dialog header="#{msg['menu.vinculo.popup.titulo']}" widgetVar="listaTecnicoPopup" modal="true" 
-    showEffect="fade" hideEffect="fade" resizable="false" position="top" width="750" height="500" closable="false">
-        <p:outputPanel id="listaTecnicoPanel" >
-        
-	    
-	    <p:dataTable value="#{vincularTecnicoBean.listaOS}" var="os">
-	      <f:facet name="header">
-          #{msg['menu.vinculo.chamados']}
-        </f:facet>
-		    <p:column headerText="Número OS" style="text-align:center;" width="10">
-		        <h:outputText value="#{os.id}" />
-		    </p:column>
-		 
-		    <p:column headerText="Solicitante" style="text-align:center"  width="20">
-		        <h:outputText value="#{os.solicitante}" />
-		    </p:column>
-		 
-		    <p:column headerText="Categoria" style="text-align:center"  width="15">
-		        <h:outputText value="#{os.categoria}" />
-		    </p:column>
-			<p:column headerText="SubCategoria" style="text-align:center"  width="15">
-		        <h:outputText value="#{os.subCategoria}" />
-		    </p:column>
-		    <p:column headerText="Descrição" style="text-align:center" width="40">
-		        <h:outputText value="ver descrição" id="descricao"/>
-		        <p:tooltip id="toolTipContent" for="descricao">
-		        <p:outputPanel style=" width:400px">
-		        #{os.descricao}
-		        </p:outputPanel>
-		        </p:tooltip>
-		    </p:column>
-		    
-		</p:dataTable>
-        
-        
-            <br/>
-            
-        <p:outputPanel id="listaTabelaTecnico">
-        <p:outputLabel for="grupo" value="#{msg['menu.vinculo.popup.grupo']} :" style="float:left"/>
-        <p:selectOneMenu  id="grupo" value="#{vincularTecnicoBean.grupoId}"  editable="false" style="margin-left:10px">
-             <p:ajax listener="#{vincularTecnicoBean.onGrupoChange}" update="listaTecnicos" />
-            <f:selectItem itemLabel="Selecione" itemValue="" />
-            <f:selectItems value="#{vincularTecnicoBean.listaGrupoSelect}" />
-        </p:selectOneMenu>
-        
-        <p:dataTable value="#{vincularTecnicoBean.listaTecnicos}" 
-        paginator="true" rows="25"
-        id="listaTecnicos" var="tec" type="ordered"  itemType="none" 
-        selection="#{vincularTecnicoBean.tecnicoSelecionado}" 
-					rowKey="#{tec.id}">
-        <f:facet name="header">
-          Técnicos
-        </f:facet>
-        <p:column width="120">
-	     	<f:facet name="header" >
-				<b><h:outputText value="Nome:" style="float: left;" /></b>
-			</f:facet>        
-	        #{tec.userNameCalculado}
-	     </p:column>
+				<p:column sortBy="#{os.categoria}" field="problem_type" width="8%">
+					<f:facet name="header">
+						<b><h:outputText value="Categoria" /></b>
+					</f:facet>
+	                #{os.categoria}
+	            </p:column>
 
-						<p:column width="50">
-							<f:facet name="header">
-								<b><h:outputText value="Total OS hoje:" style="float: left;" /></b>
-							</f:facet>
-							<h:outputLink id="content" value="#">
-								<h:outputText value="#{tec.osHoje.size()}" />
-							</h:outputLink>
+				<p:column filterBy="#{os.status}">
+					<f:facet name="filter">
+						<p:selectCheckboxMenu label="Status"
+							value="#{vincularTecnicoBean.filtros}" panelStyle="width:205px"
+							scrollHeight="150">
+							<p:ajax listener="#{vincularTecnicoBean.onFiltroChange}"
+								update="listaOS" />
+							<f:selectItems value="#{vincularTecnicoBean.listaStatus}" />
+						</p:selectCheckboxMenu>
+					</f:facet>
+					<h:outputText value=" #{os.status}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<b><h:outputText value="Titulo" /></b>
+					</f:facet>
+		            #{os.titulo}
+		        </p:column>
 
-							<p:tooltip id="toolTipContent" for="content">
-								<p:dataTable value="#{tec.osHoje}" var="resumoOS"
-									style="width:200px">
-									<f:facet name="header">
-				          OS Hoje
+				<p:column>
+					<f:facet name="header">
+						<b><h:outputText value="End. Atendimento" /></b>
+					</f:facet>
+	                #{os.enderecoAtendimento}
+	            </p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<b><h:outputText value="Solicitante" /></b>
+					</f:facet>
+	                #{os.solicitante}
+	            </p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<b><h:outputText value="Responsável" width="10%" /></b>
+					</f:facet>
+	                #{os.responsavel}
+	            </p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<b><h:outputText value="Data/Hora Solicitação" /></b>
+					</f:facet>
+
+					<h:outputText value="#{os.dataAbertura}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" type="both" />
+					</h:outputText>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<b><h:outputText value="Prioridade" /></b>
+					</f:facet>
+	                #{os.prioridade}
+	            </p:column>
+				<p:column>
+					<f:facet name="header">
+						<b><h:outputText value="Classifição" /></b>
+					</f:facet>
+	                #{os.classificacao}
+	            </p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<b><h:outputText value="Contato" /></b>
+					</f:facet>
+	                #{os.contato}
+	            </p:column>
+
+				<p:column headerText="Grupo Atendimento">
+					<h:outputText value=" #{os.grupo}" />
+				</p:column>
+			</p:dataTable>
+			<br />
+			
+			<p:commandButton value="Carregar" icon="ui-icon-disk"
+				id="botaoCarregarPopUp"
+				disabled="#{vincularTecnicoBean.bloqueaBotao}"
+				action="#{vincularTecnicoBean.resetGrupoTecnicos}"
+				update=":form:listaTecnicoPanel"
+				oncomplete="PF('listaTecnicoPopup').show()"
+				style="float:right; width:100px" />
+
+			<p:dialog header="#{msg['menu.vinculo.popup.titulo']}"
+				widgetVar="listaTecnicoPopup" modal="true" showEffect="fade"
+				hideEffect="fade" resizable="false" position="top" width="750"
+				height="500" closable="false">
+				<p:outputPanel id="listaTecnicoPanel">
+
+					<p:dataTable value="#{vincularTecnicoBean.listaOS}" var="os">
+						<f:facet name="header">
+				          #{msg['menu.vinculo.chamados']}
 				        </f:facet>
-
-									<p:column>
-										<f:facet name="header">
-											<b><h:outputText value="N.:" style="float: left;" /></b>
-										</f:facet>        
-						        #{resumoOS.id}
-						     </p:column>
-
-									<p:column>
-										<f:facet name="header">
-											<b><h:outputText value="Solicitante:"
-													style="float: left;" /></b>
-										</f:facet>        
-						         #{resumoOS.solicitante}
-						     </p:column>
-
-								</p:dataTable>
-							</p:tooltip>
-
+						<p:column headerText="Número OS" style="text-align:center;"
+							width="10">
+							<h:outputLink styleClass="link"
+								value="${request.requestURL.substring(0, request.requestURL.lastIndexOf(':'))}/index.jsp#/SREdit.jsp"
+								target="_blank">#{os.id}
+							<f:param name="id" value="#{os.id}" />
+								<f:param name="fromId" value="IncidentsList" />
+							</h:outputLink>
 						</p:column>
-						
-					<p:column width="50">
-							<f:facet name="header">
-								<b><h:outputText value="OS Ativas:" style="float: left;" /></b>
-							</f:facet>
-							<h:outputLink id="contentOS" value="#">
-								<h:outputText value="#{tec.osTotalAberta.size()}" />
-							</h:outputLink>
 
-							<p:tooltip id="toolTipContentOS" for="contentOS">
-								<p:dataTable value="#{tec.osTotalAberta}" var="resumoOS"
-									style="width:300px">
-									<f:facet name="header">
-				          OS Ativas
-				        </f:facet>
+						<p:column headerText="Solicitante" style="text-align:center"
+							width="20">
+							<h:outputText value="#{os.solicitante}" />
+						</p:column>
 
-									<p:column>
-										<f:facet name="header">
-											<b><h:outputText value="N.:" style="float: left;" /></b>
-										</f:facet>        
-						       #{resumoOS.id}
-						     </p:column>
-
-									<p:column>
-										<f:facet name="header">
-											<b><h:outputText value="Solicitante:"
-													style="float: left;" /></b>
-										</f:facet>        
-						         #{resumoOS.solicitante}
-						     </p:column>
-									<p:column>
-										<f:facet name="header">
-											<b><h:outputText value="Dt Abertura:" style="float: left;" /></b>
-										</f:facet>        
-						        <h:outputText value="#{resumoOS.dataAbertura}">
-									<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" type="both" />
-								</h:outputText> 
-						     </p:column>						     
-
-								</p:dataTable>
+						<p:column headerText="Categoria" style="text-align:center"
+							width="15">
+							<h:outputText value="#{os.categoria}" />
+						</p:column>
+						<p:column headerText="SubCategoria" style="text-align:center"
+							width="15">
+							<h:outputText value="#{os.subCategoria}" />
+						</p:column>
+						<p:column headerText="Descrição" style="text-align:center"
+							width="40">
+							<h:outputText value="ver descrição" id="descricao"
+								styleClass="link" />
+							<p:tooltip id="toolTipContent" for="descricao">
+								<p:outputPanel style=" width:400px">
+						        #{os.descricao}
+						        </p:outputPanel>
 							</p:tooltip>
+						</p:column>
+					</p:dataTable>
 
-						</p:column> 
-						
-		<p:column width="50" style="text-align: center">
-             <p:commandButton value="ok" update=":form"  icon="ui-icon-check" title="Salvar"
-             action="#{vincularTecnicoBean.salvarTecnico}"
-             oncomplete="PF('listaTecnicoPopup').hide()">
-                <f:setPropertyActionListener value="#{tec}" target="#{vincularTecnicoBean.tecnicoSelecionado}" />
-            </p:commandButton>
-        </p:column>				
-	        
-	    </p:dataTable>
-	    </p:outputPanel>
-              <p:commandButton value="Cancelar" update=":form"  icon="ui-icon-close" title="Fechar"
-              width="200px" style="float: right;"
-             oncomplete="PF('listaTecnicoPopup').hide()"
-             action="#{vincularTecnicoBean.liberarOSSelecionadas}" >
-            </p:commandButton>
-        </p:outputPanel>
-    </p:dialog>    
-    </h:form>
-			
-			
+
+					<br />
+
+					<p:outputPanel id="listaTabelaTecnico">
+						<p:outputLabel for="grupo"
+							value="#{msg['menu.vinculo.popup.grupo']} :" style="float:left" />
+						<p:selectOneMenu id="grupo" value="#{vincularTecnicoBean.grupoId}"
+							editable="false" style="margin-left:10px">
+							<p:ajax listener="#{vincularTecnicoBean.onGrupoChange}"
+								update="listaTecnicos" />
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{vincularTecnicoBean.listaGrupoSelect}" />
+						</p:selectOneMenu>
+
+						<p:dataTable value="#{vincularTecnicoBean.listaTecnicos}"
+							paginator="true" rows="25" id="listaTecnicos" var="tec"
+							type="ordered" itemType="none"
+							selection="#{vincularTecnicoBean.tecnicoSelecionado}"
+							rowKey="#{tec.id}">
+							<f:facet name="header">
+					          Técnicos
+					        </f:facet>
+							<p:column width="120">
+								<f:facet name="header">
+									<b><h:outputText value="Nome:" style="float: left;" /></b>
+								</f:facet>        
+						        #{tec.userNameCalculado}
+						     </p:column>
+
+							<p:column width="50">
+								<f:facet name="header">
+									<b><h:outputText value="Total OS hoje:"
+											style="float: left;" /></b>
+								</f:facet>
+								<h:outputLink id="content" value="#">
+									<h:outputText value="#{tec.osHoje.size()}" styleClass="link" />
+								</h:outputLink>
+
+								<p:tooltip id="toolTipContent" for="content">
+									<p:dataTable value="#{tec.osHoje}" var="resumoOS"
+										style="width:500px">
+										<f:facet name="header">
+								          OS Hoje
+								        </f:facet>
+
+										<p:column width="15%">
+											<f:facet name="header">
+												<b><h:outputText value="N.:" style="float: left;" /></b>
+											</f:facet>        
+									        #{resumoOS.id}
+									     </p:column>
+
+										<p:column>
+											<f:facet name="header">
+												<b><h:outputText value="Solicitante:"
+														style="float: left;" /></b>
+											</f:facet>        
+									         #{resumoOS.solicitante}
+									     </p:column>
+
+									</p:dataTable>
+								</p:tooltip>
+
+							</p:column>
+
+							<p:column width="50">
+								<f:facet name="header">
+									<b><h:outputText value="OS Ativas:" style="float: left;" /></b>
+								</f:facet>
+								<h:outputLink id="contentOS" value="#">
+									<h:outputText value="#{tec.osTotalAberta.size()}"
+										styleClass="link" />
+								</h:outputLink>
+
+								<p:tooltip id="toolTipContentOS" for="contentOS">
+									<p:dataTable value="#{tec.osTotalAberta}" var="resumoOS"
+										style="width:500px">
+										<f:facet name="header">
+								          OS Ativas
+								        </f:facet>
+
+										<p:column width="15%">
+											<f:facet name="header">
+												<b><h:outputText value="N.:" style="float: left;" /></b>
+											</f:facet>        
+									       #{resumoOS.id}
+									     </p:column>
+
+										<p:column>
+											<f:facet name="header">
+												<b><h:outputText value="Solicitante:"
+														style="float: left;" /></b>
+											</f:facet>        
+									         #{resumoOS.solicitante}
+									     </p:column>
+										<p:column>
+											<f:facet name="header">
+												<b><h:outputText value="Dt Abertura:"
+														style="float: left;" /></b>
+											</f:facet>
+											<h:outputText value="#{resumoOS.dataAbertura}">
+												<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" type="both" />
+											</h:outputText>
+										</p:column>
+
+									</p:dataTable>
+								</p:tooltip>
+
+							</p:column>
+
+							<p:column width="50" style="text-align: center">
+								<p:commandButton value="ok" update=":form" icon="ui-icon-check"
+									title="Salvar" action="#{vincularTecnicoBean.salvarTecnico}"
+									oncomplete="PF('listaTecnicoPopup').hide()">
+									<f:setPropertyActionListener value="#{tec}"
+										target="#{vincularTecnicoBean.tecnicoSelecionado}" />
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</p:outputPanel>
+					<p:commandButton value="Cancelar" update=":form"
+						icon="ui-icon-close" title="Fechar" width="200px"
+						style="float: right; margin-top: 20px "
+						oncomplete="PF('listaTecnicoPopup').hide()"
+						action="#{vincularTecnicoBean.liberarOSSelecionadas}">
+					</p:commandButton>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+
 	</ui:define>
 </ui:composition>

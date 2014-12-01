@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
@@ -115,16 +116,19 @@ public abstract class AbstractBean implements Serializable {
 					}
 				}
 				if (cookie.getName().trim().equalsIgnoreCase("sysaidcookie")) {
+					
 					System.out.println("Encontrou o cookie sysaidcookie. Valor: " + cookie.getValue());
-					user = usuarioFacade.find(cookie.getValue());					
+					String decoded = new String(Base64.decodeBase64(cookie.getValue().substring(6)));
+					System.out.println("Encontrou o cookie communityUserName. Valor: " + cookie.getValue() + " Valor Real: " + decoded);
+					user = usuarioFacade.find(decoded);					
 					return user;
 				}
 			}
 		} catch (Exception x) {
-			System.out.println("Erro ao caputurar o usu�rio pelo cookie. Erro: " + x.getMessage());
+			System.out.println("Erro ao caputurar o usuario pelo cookie. Erro: " + x.getMessage());
 			x.printStackTrace();
 		}
-		System.out.println("N�o encontrou os cookie communityUserName ou sysaidcookie");
+		System.out.println("Nao encontrou os cookie communityUserName ou sysaidcookie");
 	/*	Usuario teste = new Usuario();
 		teste.setUserNameCalculado("MR Teste");
 		teste.setUserName("teste");*/
@@ -166,6 +170,14 @@ public abstract class AbstractBean implements Serializable {
 	
 	public Object getObjectInSession(String chave){
 		return FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(chave);
+	}
+	
+	public String getUrlOS(){
+		FacesContext context = FacesContext.getCurrentInstance();
+	    ExternalContext externalContext = context.getExternalContext();
+	    String url = externalContext.getApplicationContextPath();
+	    
+	    return url.substring(0, url.indexOf(":"));
 	}
 	
 	/*FacesContext context = FacesContext.getCurrentInstance();

@@ -58,9 +58,9 @@
   
 
   ######## Modal Seleção de tecnico disponível
-  - alterar label -> OS em aberto para "OS ativa";
+  OK - alterar label -> OS em aberto para "OS ativa";
   OK - Apresentar o total de OSs vinculadas ao técnico, mesmo para grupos não dinâmicos (plus)
-  - apresentar modal mais a baixo (margin-top)
+  OK - apresentar modal mais a baixo (margin-top)
   OK - hover sobre o número -> hover sobre célula
 
 #### Programar indisponibilidade
@@ -85,9 +85,6 @@ ok - Pintar de Azul a linha do usuário indisponível no Período
 ok - Verificar total de OS no período
 
 
-#### Geral
-- Melhor marca na página atual da paginação
-
 #### Grupo dinamico
 OK- Adicionar botao par abrir popup para seleção de responsável pelo grupo
  
@@ -100,23 +97,41 @@ OK- Após a seleção do responsável, mostrar na tabela dos Grupos - criar colu
 #### Grupo de indisponibilidade ???
 OK  - Adicionar coluna de responsável pela equipe
 OK - Ajustar tamanho da tabela
-  - Ao selecionar a linha na tabela, apresentar o item selecionado em verde (background-color: #E6F3E5)
-  - Editar e excluir - links com botões e ícones
+OK  - Ao selecionar a linha na tabela, apresentar o item selecionado em verde (background-color: #E6F3E5)
+OK  - Editar e excluir - links com botões e ícones
 
 #### Feedbacks do cliente
   - Atendentes Nívea, Fátima, Núbia
-  - Filtro por status (aberta, pendente-sub-os,...)
-  - Existem alguns dados que não estão sendo apresentados na lista de OS
-  - Possibilidade de vincular mais de uma OS para um técnico (testar)
-  - Na lista de OSs, ordenar pela data/hora de criação (mais novas no topo da tela)
-  - Opção para edição de OS - Link para edição
-  - O total de OS vinculadas não está sendo apresentadas
-  - No relatório, o total de OS do período nào está sendo contabilizado
-  - Na informação de OSs em aberto, na tela de vínculo - aumentar width para melhor visualização do detalhe
-  - Tratar OSs arquivadas e não arquivadas
-  - TESTES DE CADASTRO DE OS NA FORMA NATURAL
-  - Tela de Vínculo da OS
-    - É importante ver a descrição da OS.
-    - Categoria, sub-categoria e assunto
-    - Apresentar Informação do status das SUB-OS  
+  OK - Filtro por status (aberta, pendente-sub-os,...)
+  OK - Existem alguns dados que não estão sendo apresentados na lista de OS
+  OK - Possibilidade de vincular mais de uma OS para um técnico (testar)
+  OK - Na lista de OSs, ordenar pela data/hora de criação (mais novas no topo da tela)
+  OK - Opção para edição de OS - Link para edição
+  OK - O total de OS vinculadas não está sendo apresentadas
+  OK - No relatório, o total de OS do período nào está sendo contabilizado
+  OK - Na informação de OSs em aberto, na tela de vínculo - aumentar width para melhor visualização do detalhe
+  OK - Tratar OSs arquivadas e não arquivadas
+  OK - TESTES DE CADASTRO DE OS NA FORMA NATURAL
+  OK - Tela de Vínculo da OS
+    OK - É importante ver a descrição da OS.
+    OK - Categoria, sub-categoria e assunto
 
+	
+#### Revisão 01/12
+
+###### Lista de OS
+	OK - label da tabela - Classificão > Classifição
+	OK - Scroll horizontal na tela?
+	OK - mudar cor da seleção da OS
+	
+	* Modal de seleção do técnico 
+		OK ** Colocar underline na "descrição"
+		OK ** Aumentar tamanho das modais de "OS de Hoje" e "OS Ativa"
+		OK ** Colocar link para "Ver OS"
+		
+	* Programar indisponibilidade
+		OK ** Ajustar largura da tela para o combo
+		
+	* Modal de programar indisponibilidade
+		OK ** Aumentar largura da tabela
+		OK ** Ajustar margens dos elementos
