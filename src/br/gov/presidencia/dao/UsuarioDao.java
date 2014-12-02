@@ -135,6 +135,15 @@ public class UsuarioDao extends GenericDao<Usuario> {
 		return lista;
 	}
 	
+	public List<Usuario> findUsuarioByNome(String nome){
+		
+		TypedQuery<Usuario> query = this.getEntityManager().createNamedQuery("Usuario.findUserByName", Usuario.class);
+		query.setParameter("nome", nome+"%");
+		query.setMaxResults(20);
+		return query.getResultList();
+		
+	}
+	
 	private List<ResumoOrdemServico> recuperaResumoOSPorTecnico(Usuario user_name,
 			Date inicio, Date fim){
 		 TypedQuery<ResumoOrdemServico> query = null;

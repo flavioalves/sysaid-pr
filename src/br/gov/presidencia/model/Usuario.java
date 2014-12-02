@@ -11,15 +11,22 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "SYSAID_USER")
+@NamedQueries({
+    @NamedQuery(name="Usuario.findUserByName",
+            query="SELECT u FROM Usuario u where UPPER(u.userNameCalculado) like UPPER(:nome) ORDER BY u.nome ASC"),	            
+})
 public class Usuario extends GenericModel implements Serializable{
 	
 	 @Transient
@@ -49,6 +56,10 @@ public class Usuario extends GenericModel implements Serializable{
 		@Where(clause = "ativo = 'Y'")
 		@OrderBy("id DESC")
 		private List<Indisponibilidade> indisponibilidades;
+		
+		@Column(name="ADMINISTRATOR")
+		@Type(type="yes_no")
+		private Boolean administrador;
 	  
 	  
 	  //@Formula(" (SELECT COUNT(*) from service_req os where os.sr_type = 1 and os.responsibility = USER_NAME)")
@@ -196,6 +207,15 @@ public class Usuario extends GenericModel implements Serializable{
 
 	public void setListaFilaOrdemServico(List<FilaOrdemServico> listaFilaOrdemServico) {
 		this.listaFilaOrdemServico = listaFilaOrdemServico;
+	}
+
+	public Boolean getAdministrador() {
+		return administrador;
+	}
+
+
+	public void setAdministrador(Boolean administrador) {
+		this.administrador = administrador;
 	}
 
 

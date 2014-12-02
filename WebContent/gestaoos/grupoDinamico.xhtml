@@ -69,10 +69,24 @@
 				widgetVar="listaTecnicoPopup" modal="true" showEffect="fade"
 				hideEffect="fade" resizable="false" width="330" height="400"
 				position="top">
+				
+
+		        
+ 				<p:outputLabel value="Busca todos por Nome:" for="buscaUser" /><br/>
+				<p:autoComplete id="buscaUser" value="#{grupoDinamicoBean.usuarioSelecionado}" completeMethod="#{grupoDinamicoBean.findUsuarioByNome}"
+                        var="tec" itemLabel="#{tec.userNameCalculado}" itemValue="#{tec}" converter="objectConverter" forceSelection="true" style="margin-right:10px">
+		        </p:autoComplete>
+		        			<p:commandButton update=":form:listGrupo" 
+								action="#{grupoDinamicoBean.selecionarTecnico}"
+								oncomplete="PF('listaTecnicoPopup').hide()" icon="ui-icon-disk"
+								title="OK">
+							</p:commandButton>
+							
+							<br/><br/>
 
 				<p:outputPanel id="listaTecnicoPanel">
 					<h5 style="margin-top: 0">
-						<b>Grupo: </b>
+						<b>Usuários do Grupo: </b>
 						<h:outputText value="#{grupoDinamicoBean.grupoSelecionado.nome}" />
 					</h5>
 
