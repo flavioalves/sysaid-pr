@@ -140,10 +140,10 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 					//Estou pasando os dados da segunranca na busca por OS
 					listaRetorno =  getOrdemServicoFacade().listAll(first,pageSize,sortField,sort,getFiltrosInt(), tipoSeguranca,getUsuarioLogadoCookie());
 					} catch (SQLException e) {
-						displayErrorMessageToUser("Erro ao recuperar a descrição da OS");
+						displayErrorMessageToUser("Erro SQL ao recuperar a descrição da OS");
 						e.printStackTrace();
 					} catch (IOException e) {
-						displayErrorMessageToUser("Erro ao recuperar a descrição da OS");
+						displayErrorMessageToUser("Erro de IO ao recuperar a descrição da OS");
 						e.printStackTrace();
 					}
 				
@@ -208,7 +208,7 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 			try {
 				this.paramControleFacade.limpaFiltro(id);
 			} catch (Exception e1) {
-				this.displayErrorMessageToUser("Erro ao configurar filtro. " + e1.getMessage());
+				this.displayErrorMessageToUser("Erro ao excluir filtro. " + e1.getMessage());
 				e1.printStackTrace();
 				return;
 			}
@@ -223,6 +223,7 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 					this.paramControleFacade.save(param);
 				} catch (Exception e) {
 					this.displayErrorMessageToUser("Erro ao configurar filtro. " + e.getMessage());
+					e.printStackTrace();
 					return;
 				}
 			}
@@ -237,7 +238,7 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 			this.removeOSSelecionada(super.getUsuarioLogadoCookie().getUserName());
 			super.displayInfoMessageToUser("Salvo com sucesso");
 		} catch (Exception e) {
-			super.displayErrorMessageToUser("Erro ao Salvar os dados "+e.getMessage());
+			super.displayErrorMessageToUser("Erro ao Salvar OS com regras de negocio "+e.getMessage());
 			e.printStackTrace();
 		}
 		
