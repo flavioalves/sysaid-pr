@@ -162,8 +162,7 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
 	        	} 
 	        };
 
-	        //Nao estou utilizando essa informacao
-	        int totalRowCount = 100; //logical row count based on a count query
+	        int totalRowCount = 	getOrdemServicoFacade().totalListaAll(getFiltrosInt(), tipoSeguranca, getUsuarioLogadoCookie()); //logical row count based on a count query
 	        this.modelList.setRowCount(totalRowCount);
 	}
 

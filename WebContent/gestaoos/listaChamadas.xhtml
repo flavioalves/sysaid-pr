@@ -192,10 +192,10 @@
 							<p:outputPanel rendered="#{!empty os.listaSubOS}">
 							<h:outputText value="ver status" id="subos"
 								styleClass="link" />
-								<p:tooltip id="toolTipSubOS" for="subos" rendered="#{!empty os.listaSubOS}">
-									<p:dataTable value="#{os.listaSubOS}" var="sub" paginator="false" itemType="none"  style="width:200px">
+								<p:tooltip id="toolTipSubOS" for="subos" rendered="#{!empty os.listaSubOS}" hideDelay="3000"  >
+									<p:dataTable value="#{os.listaSubOS}" var="sub" paginator="false" itemType="none"  style="width:450px">
 									
-									<p:column width="30%">
+									<p:column width="20%">
 										<f:facet name="header">
 											<b><h:outputText value="SubOS:" style="float: left;" /></b>
 										</f:facet>
@@ -206,12 +206,32 @@
 										<f:param name="fromId" value="IncidentsList" />
 									</h:outputLink>
 									</p:column>
-									<p:column width="70%">
+									<p:column width="20%">
+										<f:facet name="header">
+											<b><h:outputText value="Titulo:" style="float: left;" /></b>
+										</f:facet> 				        
+							         #{sub.titulo}
+							        </p:column>
+									<p:column width="20%">
+										<f:facet name="header">
+											<b><h:outputText value="Grupo:" style="float: left;" /></b>
+										</f:facet> 				        
+							         #{sub.grupo}
+							        </p:column>								
+									<p:column width="20%">
 										<f:facet name="header">
 											<b><h:outputText value="Status:" style="float: left;" /></b>
 										</f:facet> 				        
 							         #{sub.status}
 							        </p:column>
+							     	<p:column width="20%">
+										<f:facet name="header">
+											<b><h:outputText value="Data:" style="float: left;" /></b>
+										</f:facet> 				        
+							        	<h:outputText value="#{sub.dataAbertura}">
+												<f:convertDateTime pattern="dd/MM/yyyy" type="both" />
+											</h:outputText>
+							        </p:column>   
 							    </p:dataTable>
 							</p:tooltip>
 							</p:outputPanel>

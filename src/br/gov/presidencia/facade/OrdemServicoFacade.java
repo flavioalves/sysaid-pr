@@ -108,6 +108,9 @@ public class OrdemServicoFacade extends GenericFacade<OrdemServico>{
 		return  this.ordemServicoDao.listAll(first,pageSize,sortField,sortOrder,filtrosStatus, tipoSeguranca, user);
 		
 	}
+	public int totalListaAll( List<Integer> status, int tipoSeguranca, Usuario user) {
+		return this.ordemServicoDao.totalListaAll(status, tipoSeguranca, user);
+	}
 
 
 	public void setOrdemServicoDao(OrdemServicoDao ordemServicoDao) {
