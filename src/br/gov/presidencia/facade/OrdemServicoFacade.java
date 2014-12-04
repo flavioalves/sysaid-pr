@@ -91,6 +91,10 @@ public class OrdemServicoFacade extends GenericFacade<OrdemServico>{
 		return this.getOrdemServicoDao().listAll();
 	}
 	
+	public List<OrdemServico> listAllSubOS(OrdemServico osPai){
+		return this.getOrdemServicoDao().listAllSubOS(osPai);
+	}
+	
 	public List<CustValue> listaCustValuesporTipo(String tipo){
 		return this.getOrdemServicoDao().listaCustValuesporTipo(tipo);
 	}

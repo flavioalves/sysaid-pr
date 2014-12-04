@@ -3,6 +3,7 @@ package br.gov.presidencia.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class OrdemServico extends GenericModel implements Serializable {
 
@@ -37,6 +38,8 @@ public class OrdemServico extends GenericModel implements Serializable {
 	private String grupo;
 	
 	private BigDecimal version;
+	
+	private List<OrdemServico> listaSubOS;
 	
 
 	public BigDecimal getId() {
@@ -166,6 +169,14 @@ public class OrdemServico extends GenericModel implements Serializable {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public List<OrdemServico> getListaSubOS() {
+		return listaSubOS;
+	}
+
+	public void setListaSubOS(List<OrdemServico> listaSubOS) {
+		this.listaSubOS = listaSubOS;
 	}
 
 	@Override

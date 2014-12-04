@@ -182,16 +182,49 @@
 							width="15">
 							<h:outputText value="#{os.categoria}" />
 						</p:column>
+
 						<p:column headerText="SubCategoria" style="text-align:center"
-							width="15">
+							width="15" >
 							<h:outputText value="#{os.subCategoria}" />
 						</p:column>
+						<p:column headerText="Sub OS(s)" style="text-align:center"
+							width="20" >
+							<p:outputPanel rendered="#{!empty os.listaSubOS}">
+							<h:outputText value="ver status" id="subos"
+								styleClass="link" />
+								<p:tooltip id="toolTipSubOS" for="subos" rendered="#{!empty os.listaSubOS}">
+									<p:dataTable value="#{os.listaSubOS}" var="sub" paginator="false" itemType="none"  style="width:200px">
+									
+									<p:column width="30%">
+										<f:facet name="header">
+											<b><h:outputText value="SubOS:" style="float: left;" /></b>
+										</f:facet>
+										<h:outputLink styleClass="link" 
+										value="${request.requestURL.substring(0, request.requestURL.lastIndexOf(':'))}/index.jsp#/SREdit.jsp"
+										target="_blank">#{sub.id}
+									<f:param name="id" value="#{sub.id}" />
+										<f:param name="fromId" value="IncidentsList" />
+									</h:outputLink>
+									</p:column>
+									<p:column width="70%">
+										<f:facet name="header">
+											<b><h:outputText value="Status:" style="float: left;" /></b>
+										</f:facet> 				        
+							         #{sub.status}
+							        </p:column>
+							    </p:dataTable>
+							</p:tooltip>
+							</p:outputPanel>
+							
+							</p:column>
+	
+						
 						<p:column headerText="Descrição" style="text-align:center"
-							width="40">
+							width="20">
 							<h:outputText value="ver descrição" id="descricao"
 								styleClass="link" />
 							<p:tooltip id="toolTipContent" for="descricao">
-								<p:outputPanel style=" width:400px">
+								<p:outputPanel style="width:400px">
 						        #{os.descricao}
 						        </p:outputPanel>
 							</p:tooltip>

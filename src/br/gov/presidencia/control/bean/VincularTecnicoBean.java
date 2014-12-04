@@ -254,7 +254,10 @@ public class VincularTecnicoBean extends AbstractBean implements Serializable{
     	if(getUsuarioLogadoCookie() != null){
     		saveOSSelecionada(getUsuarioLogadoCookie().getUserName(), getListaOS());
     	}
-
+    	for(OrdemServico osPai : getListaOS()){
+    		 List<OrdemServico> listaSubOS  = ordemServicoFacade.listAllSubOS(osPai);
+    		osPai.setListaSubOS(listaSubOS);
+    	}
     }
     
     public void onRowSelect(SelectEvent event) {  
