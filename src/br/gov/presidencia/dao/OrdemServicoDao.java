@@ -54,8 +54,8 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 							"left join cust_values p on r.priority = p.value_key  and p.list_name = 'priority' "+
 							"left join cust_values urg on r.location = urg.value_key  and urg.list_name = 'urgency' "+
 							"left join sysaid_user u on u.user_name = r.request_user "+
-							"left join sysaid_user ur on ur.user_name = r.responsibility "
-							+ " where r.sr_type = 1 ORDER by r.id DESC";
+							"left join sysaid_user ur on ur.user_name = r.responsibility "+
+							" where r.sr_type = 1  and r.ARCHIVE != 1 ";
 
 			Query query = getEntityManager().createNativeQuery(sql);
 			@SuppressWarnings("unchecked")
@@ -76,6 +76,66 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 			os.setContato((String)obj[9]); 
 			os.setVersion((BigDecimal)obj[10]); 
 			os.setGrupo((String)obj[11]); 
+			
+			
+			lista.add(os);
+		}
+		
+		return lista;
+		
+	}
+	
+	
+	public List<OrdemServico> listAllSubOS(OrdemServico osPai){
+		
+		 List<OrdemServico> lista = new ArrayList<OrdemServico>();
+		
+			String sql = ("SELECT r.id,"+
+					"l.value_caption location, "+
+					"u.calculated_user_name request_user, "+
+					"s.value_caption status, "+
+					"ur.calculated_user_name responsibility, "+
+					"r.insert_time, "+
+					"p.value_caption priority, "+
+					"urg.value_caption urgency, "+
+					"problem_type, "+
+					"r.contact, "+
+					"r.version, "+
+					"r.assigned_group, " +
+					"r.PROBLEM_SUB_TYPE, "+
+					"r.TITLE "+					
+					" FROM service_req r "+
+					"left join cust_values l on r.location = l.value_key  and l.list_name = 'location' "+
+					"left join cust_values s on r.status = s.value_key  and s.list_name = 'status' "+
+					"left join cust_values p on r.priority = p.value_key  and p.list_name = 'priority' "+
+					"left join cust_values urg on r.urgency = urg.value_key  and urg.list_name = 'urgency' "+
+					"left join sysaid_user u on u.user_name = r.request_user "+
+					" left join sysaid_user ur on ur.user_name = r.responsibility "+
+					" where r.sr_type = 1 and r.SR_CUST_NUMBERMAINOSI = :idOS ORDER by r.id DESC");
+
+			Query query = getEntityManager().createNativeQuery(sql);
+			query.setParameter("idOS", osPai.getId());
+			
+			@SuppressWarnings("unchecked")
+			List<Object[]> retorno = query.getResultList();
+			
+			for(Object[] obj : retorno) {
+
+			OrdemServico os = new OrdemServico();
+			os.setId((BigDecimal) obj[0]);
+			os.setEnderecoAtendimento((String)obj[1]);
+			os.setSolicitante((String)obj[2]);
+			os.setStatus((String)obj[3]);
+			os.setResponsavel((String)obj[4]);
+			os.setDataAbertura((Date)obj[5]);
+			os.setPrioridade((String)obj[6]);
+			os.setClassificacao((String)obj[7]);
+			os.setCategoria((String)obj[8]);
+			os.setContato((String)obj[9]); 
+			os.setVersion((BigDecimal)obj[10]); 
+			os.setGrupo((String)obj[11]);
+			os.setSubCategoria((String)obj[12]);
+			os.setTitulo((String)obj[13]);
 			
 			
 			lista.add(os);
@@ -234,19 +294,30 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 		
 	}
 	
+	public int totalListaAll( List<Integer> status, int tipoSeguranca, Usuario user) {
+		String sqlSeguranca = aplicaSegurancaNaQuery(tipoSeguranca, user);
+		StringBuilder sql = new StringBuilder();
+			sql.append("SELECT count(r.id)  FROM service_req r  where r.sr_type = 1 ");
+			sql.append(sqlSeguranca);
+			sql.append(" and r.ARCHIVE != 1 ");
+			
+			if(status != null && !status.isEmpty()){
+	 			sql.append(" and r.status in :status ");
+	 		}
+			
+		Query query = getEntityManager().createNativeQuery(sql.toString());
+			if(status != null && !status.isEmpty()){
+				query.setParameter("status", status);
+			}
+			BigDecimal total = (BigDecimal) query.getSingleResult();
+			 
+			 return total.intValue();
+	}
+	
 	public List<OrdemServico> listAll(int first, int pageSize, String sortField,String sortOrder, List<Integer> status, int tipoSeguranca, Usuario user) throws SQLException, IOException {
 		 List<OrdemServico> lista = new ArrayList<OrdemServico>();
 		 
-		 String sqlSeguranca = "";
-		 
-		 if(tipoSeguranca == Usuario.All){
-			// sqlSeguranca = "";
-			}else if(tipoSeguranca == Usuario.AssignedOnly){
-				sqlSeguranca = " and r.request_user ="+user.getUserName();
-			}
-			else if(tipoSeguranca == Usuario.AssigendGroupAndAssignedOnly){
-				sqlSeguranca = sqlSeguranca+ " and r.assigned_group in (SELECT grp.GROUP_NAME FROM USER2GROUP grp WHERE grp.USER_NAME ='"+user.getUserName()+"' )";
-			}
+		 String sqlSeguranca = aplicaSegurancaNaQuery(tipoSeguranca, user);
 		 
 		if(sortField == null){sortField = "insert_time"; sortOrder = "DESC";}
 		
@@ -328,7 +399,20 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 		}
 		
 		return lista;
-		
+	}
+
+	private String aplicaSegurancaNaQuery(int tipoSeguranca, Usuario user) {
+		String sqlSeguranca = "";
+		 
+		 if(tipoSeguranca == Usuario.All){
+			// sqlSeguranca = "";
+			}else if(tipoSeguranca == Usuario.AssignedOnly){
+				sqlSeguranca = " and r.request_user ="+user.getUserName();
+			}
+			else if(tipoSeguranca == Usuario.AssigendGroupAndAssignedOnly){
+				sqlSeguranca = sqlSeguranca+ " and r.assigned_group in (SELECT grp.GROUP_NAME FROM USER2GROUP grp WHERE grp.USER_NAME ='"+user.getUserName()+"' )";
+			}
+		return sqlSeguranca;
 	}
 
 	private String convertClobToString(Clob clobObject) throws SQLException, IOException {

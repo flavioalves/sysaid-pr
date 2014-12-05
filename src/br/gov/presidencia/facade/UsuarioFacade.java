@@ -35,6 +35,10 @@ public class UsuarioFacade extends GenericFacade<Usuario> {
 		return lista;
 	}
 	
+	public List<Usuario> findUsuarioByNome(String nome){
+		return this.getUsuarioDao().findUsuarioByNome(nome);
+	}
+	
 	public Usuario find(String userName) {
 		return usuarioDao.find(userName);
 	}

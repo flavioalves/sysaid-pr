@@ -155,7 +155,7 @@ public class IndisponibilidadeBean extends AbstractBean {
 		
 		EmailNotification notitifacao = new EmailNotification();
 		try {
-			notitifacao.envarEmailUsuario(getResponsavelGrupo(), this.getTecnico(), getIndisponibilidade());
+			notitifacao.envarEmailUsuario(getResponsavelGrupo(), this.getTecnico(), getIndisponibilidade(), getUsuarioLogadoCookie());
 		} catch (EmailException e) {
 			super.displayErrorMessageToUser("Erro ao enviar e-mail de Notificação. "+e.getMessage());
 			e.printStackTrace();

@@ -9,6 +9,7 @@ import javax.inject.Named;
 import org.omnifaces.cdi.ViewScoped;
 
 import br.gov.presidencia.facade.GrupoFacade;
+import br.gov.presidencia.facade.UsuarioFacade;
 import br.gov.presidencia.model.Grupo;
 import br.gov.presidencia.model.Usuario;
 
@@ -19,7 +20,12 @@ public class GrupoDinamicoBean extends AbstractBean implements Serializable{
 	@Inject
 	private GrupoFacade grupoFacade;
 	
+	@Inject
+	private UsuarioFacade usuarioFacade;
+	
 	private List<Grupo> lista;
+	
+	private Usuario usuarioSelecionado;
 	
 	private Grupo grupoSelecionado;
 
@@ -30,24 +36,32 @@ public class GrupoDinamicoBean extends AbstractBean implements Serializable{
 	
 	public String salvar(){
 		for (Grupo grupo : this.getLista()) {
-			salvar(grupo);
+			try {
+				this.grupoFacade.save(grupo);
+			} catch (Exception e) {
+				super.displayErrorMessageToUser("Erro ao Salvar Grupo. "+e.getMessage());
+				e.printStackTrace();
+				return null;
+			}
 		}
+		super.displayInfoMessageToUser("Salvo com sucesso");
 		return null;
 	}
 
-	private void salvar(Grupo grupo) {
-		try {
-			this.grupoFacade.save(grupo);
-		} catch (Exception e) {
-			super.displayErrorMessageToUser("Erro ao Salvar o Grupo: "+grupo.getNome());
-			e.printStackTrace();
-		}
-		super.displayInfoMessageToUser("Salvo com sucesso");
+	public void selecionarTecnico(){
+		this.selecionarTecnico(getUsuarioSelecionado());
 	}
 		
 	public void selecionarTecnico(Usuario tec){
 		this.grupoSelecionado.getDinamico().setResponsavel(tec);
-		this.salvar(this.grupoSelecionado);
+		try {
+			this.grupoFacade.save(this.grupoSelecionado);
+		} catch (Exception e) {
+			super.displayErrorMessageToUser("Erro ao Salvar Grupo. "+e.getMessage());
+			e.printStackTrace();
+			return;
+		}
+		super.displayInfoMessageToUser("Salvo com sucesso");
 	}
 	
 	public void selecionarGrupo(Grupo grupo){
@@ -60,6 +74,10 @@ public class GrupoDinamicoBean extends AbstractBean implements Serializable{
 			return this.grupoSelecionado.getTecnicos();
 		}
 		return null;
+	}
+	
+	public List<Usuario> findUsuarioByNome(String nome){
+		return this.usuarioFacade.findUsuarioByNome(nome);
 	}
 
 	public GrupoFacade getGrupoFacade() {
@@ -91,6 +109,14 @@ public class GrupoDinamicoBean extends AbstractBean implements Serializable{
 
 	public void setGrupoSelecionado(Grupo grupoSelecionado) {
 		this.grupoSelecionado = grupoSelecionado;
+	}
+
+	public Usuario getUsuarioSelecionado() {
+		return usuarioSelecionado;
+	}
+
+	public void setUsuarioSelecionado(Usuario usuarioSelecionado) {
+		this.usuarioSelecionado = usuarioSelecionado;
 	}
 
 

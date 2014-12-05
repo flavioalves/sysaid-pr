@@ -91,6 +91,10 @@ public class OrdemServicoFacade extends GenericFacade<OrdemServico>{
 		return this.getOrdemServicoDao().listAll();
 	}
 	
+	public List<OrdemServico> listAllSubOS(OrdemServico osPai){
+		return this.getOrdemServicoDao().listAllSubOS(osPai);
+	}
+	
 	public List<CustValue> listaCustValuesporTipo(String tipo){
 		return this.getOrdemServicoDao().listaCustValuesporTipo(tipo);
 	}
@@ -103,6 +107,9 @@ public class OrdemServicoFacade extends GenericFacade<OrdemServico>{
 	public List<OrdemServico> listAll(int first, int pageSize, String sortField, String sortOrder, List<Integer> filtrosStatus, int tipoSeguranca, Usuario user) throws SQLException, IOException {
 		return  this.ordemServicoDao.listAll(first,pageSize,sortField,sortOrder,filtrosStatus, tipoSeguranca, user);
 		
+	}
+	public int totalListaAll( List<Integer> status, int tipoSeguranca, Usuario user) {
+		return this.ordemServicoDao.totalListaAll(status, tipoSeguranca, user);
 	}
 
 
