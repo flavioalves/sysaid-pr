@@ -77,7 +77,7 @@ public class OrdemServicoFacade extends GenericFacade<OrdemServico>{
 				//Cria Log
 				ordemServicoDao.insertLog(os.getId(),tecnico.getUserName(), user.getUserName());
 				//Atualiza OS
-				ordemServicoDao.updateQueryOS(os, tecnico, user);
+				ordemServicoDao.updateQueryOS(os, tecnico, grupo, user);
 			}
 			
 			ordemServicoDao.commit();

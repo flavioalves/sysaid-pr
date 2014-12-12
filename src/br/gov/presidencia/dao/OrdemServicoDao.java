@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 
 import br.gov.presidencia.model.CustValue;
 import br.gov.presidencia.model.FilaOrdemServico;
+import br.gov.presidencia.model.Grupo;
 import br.gov.presidencia.model.OrdemServico;
 import br.gov.presidencia.model.ResumoOrdemServico;
 import br.gov.presidencia.model.Usuario;
@@ -195,17 +196,19 @@ public class OrdemServicoDao extends GenericDao<OrdemServico> {
 	
 	/**
 	 * Atualizacao usando regras do sysaid
+	 * @param grupo 
 	 * @return
 	 */
-	public int updateQueryOS(OrdemServico os, Usuario tecnico, Usuario user){
+	public int updateQueryOS(OrdemServico os, Usuario tecnico, Grupo grupo, Usuario user){
 		
-		String sql = "UPDATE  service_req r SET r.version = :version, r.responsibility = :tecnicoId, r.update_user = :userId, r.update_time = :updateTime,  r.status = ( SELECT s.value_key "+
+		String sql = "UPDATE  service_req r SET r.version = :version, r.responsibility = :tecnicoId, r.assigned_group = :grupo, r.update_user = :userId, r.update_time = :updateTime,  r.status = ( SELECT s.value_key "+
 					 " FROM cust_values s WHERE s.value_caption = 'Encaminhada' AND s.list_name = 'status' ) "
 					 + " where r.id = :osId ";
 
 		Query query = getEntityManager().createNativeQuery(sql);
 		query.setParameter("updateTime", new Date());
 		query.setParameter("tecnicoId", tecnico.getUserName());
+		query.setParameter("grupo", grupo.getNome());
 		query.setParameter("userId", user.getUserName());
 		query.setParameter("osId", os.getId());
 		query.setParameter("version", os.getVersion().intValue() +1);
