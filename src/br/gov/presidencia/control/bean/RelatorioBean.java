@@ -36,7 +36,7 @@ public class RelatorioBean extends AbstractBean {
 	
 	private Date dataFim;
 	
-	private Integer interval = 5;
+	private Integer interval = 180;
 	
 	@Inject
 	private GrupoFacade grupoFacade;
@@ -222,7 +222,7 @@ public class RelatorioBean extends AbstractBean {
 			this.paramControleFacade.save(param);
 			this.displayInfoMessageToUser("Dados salvo com sucesso");
 		} catch (Exception e) {
-			this.displayErrorMessageToUser("Não foi possível dados. "+e.getMessage());
+			this.displayErrorMessageToUser("Nï¿½o foi possï¿½vel dados. "+e.getMessage());
 		}
 	}
     

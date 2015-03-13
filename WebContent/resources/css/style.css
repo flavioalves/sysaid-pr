@@ -55,6 +55,8 @@ span.ui-selectcheckboxmenu-label-container label , span.ui-selectcheckboxmenu-la
 	border: 1px solid #9A9A9A;
 	border-radius: 7px;
 	background-color: white;
+	float: left;
+	width: 96%;
 }
 
 .sysaid-extension-body .sysaid-extension-module h3 {
@@ -85,7 +87,11 @@ span.ui-selectcheckboxmenu-label-container label , span.ui-selectcheckboxmenu-la
 .sysaid-extension-body .sysaid-extension-module .default-table .title-column {
 	font-weight: bold;
 }
-	
+.sysaid-extension-body .sysaid-extension-module .report-panel {
+	float: left;
+	margin-right: 30px;
+	margin-bottom: 40px;
+}
 .ui-selectonemenu .ui-selectonemenu-trigger {
 	width: 23px;
 }
@@ -157,3 +163,20 @@ span.ui-selectcheckboxmenu-label-container label , span.ui-selectcheckboxmenu-la
 	width: 99%;
 }
 
+
+
+.sysaid-extension-body .sysaid-extension-module .periodo-label {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-left: 50px;	
+}
+
+
+
+.no-border {
+	border: none !important;
+}
+.no-border-grid tr, .no-border-grid td {
+	border: none !important;
+} 

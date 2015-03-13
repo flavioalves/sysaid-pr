@@ -106,19 +106,6 @@
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<!-- Relatorios -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.9</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.lowagie</groupId>
-			<artifactId>itext</artifactId>
-			<version>2.1.7</version>
-		</dependency>
 
 		<!-- Hibernate -->
 		<dependency>
@@ -143,6 +130,7 @@
             <version>9.0.6</version>
         </dependency>
         
+        <!-- Email -->
         <dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
@@ -156,13 +144,7 @@
 			<version>1.2</version>
 		</dependency>
 		        
-        <!--  
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>4.2.1</version>
-        </dependency>
-		-->
+       
 	</dependencies>
   
 </project>
