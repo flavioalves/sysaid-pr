@@ -76,6 +76,8 @@
 			
 			<p:spacer height="20">
 			</p:spacer>
+			
+		<p:outputPanel styleClass="report-panel" style="width: 500px;">	
 			<p:outputPanel id="block_relatorios" style="margin-top: 20px;">
 
 				<p:outputPanel styleClass="report-panel">
@@ -293,6 +295,11 @@
 
 					</p:dataTable>
 				</p:outputPanel>
+		</p:outputPanel>		
+		</p:outputPanel>
+		
+		<p:outputPanel styleClass="report-panel" style="width: 500px;">	
+			<p:outputPanel id="block_relatorios_2" style="margin-top: 20px;">		
 
 				<p:outputPanel styleClass="report-panel">
 					<p:outputLabel for="grupo6" value="Selecione o Grupo:"
@@ -462,7 +469,49 @@
 					</p:dataTable>
 				</p:outputPanel>
 				
+				<p:outputPanel styleClass="report-panel">
+					<p:outputLabel for="grupo10" value="Selecione o Grupo:"
+						style="width:110px" />
+					<p:selectOneMenu id="grupo10" value="#{relatorioBean.grupoRel10}"
+						editable="false" style="margin-left:10px">
+						<p:ajax listener="#{relatorioBean.onGrupoChange(10)}"
+							update="grupoRel10" />
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{relatorioBean.listaGrupoSelect}" />
+					</p:selectOneMenu>
+					<p:dataTable value="#{relatorioBean.listaUsuarioGrupoRel10}"
+						rowStyleClass="#{tec.indisponivelNoPeriodo == true ? 'indisponivel_row' : ''}"
+						rows="25" style="width:450px" id="grupoRel10" var="tec"
+						type="ordered" itemType="none"
+						selection="#{relatorioBean.usuarioSelecionado}" rowKey="#{tec.id}">
 
+
+						<p:column style="width:150px">
+							<f:facet name="header">
+								<b><h:outputText value="Nome:" style="float: left;" /></b>
+							</f:facet>        
+					       #{tec.userNameCalculado}
+					     </p:column>
+
+						<p:column style="width:80px">
+							<f:facet name="header">
+								<b><h:outputText value="OSs Ativas:" style="float: left;" /></b>
+							</f:facet>
+							#{tec.osTotalAberta.size()}	     
+					     </p:column>
+
+						<p:column style="width:80px">
+							<f:facet name="header">
+								<b><h:outputText value="OSs no Período:"
+										style="float: left;" /></b>
+							</f:facet>	     
+					        #{tec.osTotalRelatorio.size()}
+					     </p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+				
+</p:outputPanel>
 			</p:outputPanel>
 
 
